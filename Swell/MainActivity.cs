@@ -12,6 +12,7 @@ using Android.Views;
 using System.Threading;
 using System.Threading.Tasks;
 using DigitalOcean.API;
+using Android.Widget;
 
 namespace Swell
 {
@@ -19,6 +20,7 @@ namespace Swell
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         private CancellationTokenSource cts;
+        private int ServerCount;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -60,10 +62,11 @@ namespace Swell
             var client = new DigitalOcean.API.DigitalOceanClient(API_KEY.Key.ToString());
             var droplets = await client.Droplets.GetAll();
             var dropdata = new Array[droplets.Count, 100];
+            ServerCount = droplets.Count;
 
             for (int i = 0; i < droplets.Count; i++)
             {
-                submenu.Add(droplets[i].Name);
+                submenu.Add(i, i, i, droplets[i].Name);
             }
         }
 
@@ -89,6 +92,11 @@ namespace Swell
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+
+            Toast.MakeText(this, item.SubMenu.ToString(), ToastLength.Short).Show();
+
+
             if (id == Resource.Id.action_settings)
             {
                 return true;
@@ -100,7 +108,9 @@ namespace Swell
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
+            Toast.MakeText(this, "Hello world", ToastLength.Short).Show();
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
