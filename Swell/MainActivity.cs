@@ -30,6 +30,7 @@ namespace Swell
 
             StartUpdate(); // Start updating UI
         }
+
         public void StartUpdate()
         {
             if (cts != null) cts.Cancel();
@@ -70,6 +71,20 @@ namespace Swell
             }
         }
 
+        public bool OnNavigationItemSelected(IMenuItem item)
+        {
+            int id = item.ItemId;
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+
+
+
+            Toast.MakeText(this, "Hello world", ToastLength.Short).Show();
+
+            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            drawer.CloseDrawer(GravityCompat.Start);
+            return true;
+        }
+
         public override void OnBackPressed()
         {
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
@@ -103,18 +118,6 @@ namespace Swell
             }
 
             return base.OnOptionsItemSelected(item);
-        }
-
-        public bool OnNavigationItemSelected(IMenuItem item)
-        {
-            int id = item.ItemId;
-            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-
-            Toast.MakeText(this, "Hello world", ToastLength.Short).Show();
-
-            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            drawer.CloseDrawer(GravityCompat.Start);
-            return true;
         }
     }
 }
