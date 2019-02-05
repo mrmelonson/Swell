@@ -9,16 +9,40 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
+using System.Threading;
+using System.Threading.Tasks;
+using DigitalOcean.API;
 
 namespace Swell
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
+        private CancellationTokenSource cts;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
+            //RIGHT HERE IS THE MENU SHIT WORKING PROGMATTICALLY
+
+            StartUpdate(); // Start updating UI
+        }
+        public void StartUpdate()
+        {
+            if (cts != null) cts.Cancel();
+            cts = new CancellationTokenSource();
+            var ignore = UpdaterAsync(cts.Token);
+        }
+
+        public void StopUpdate() // To stop Updating
+        {
+            if (cts != null) cts.Cancel();
+            cts = null;
+        }
+
+        public async Task UpdaterAsync(CancellationToken ct)
+        {
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
@@ -30,12 +54,17 @@ namespace Swell
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
 
-            //RIGHT HERE IS THE MENU SHIT WORKING PROGMATTICALLY
-
             IMenu menu = navigationView.Menu;
-            ISubMenu submenu = menu.AddSubMenu("hello");
-            submenu.Add("hello");
+            ISubMenu submenu = menu.AddSubMenu("Servers");
 
+            var client = new DigitalOcean.API.DigitalOceanClient(API_KEY.Key.ToString());
+            var droplets = await client.Droplets.GetAll();
+            var dropdata = new Array[droplets.Count, 100];
+
+            for (int i = 0; i < droplets.Count; i++)
+            {
+                submenu.Add(droplets[i].Name);
+            }
         }
 
         public override void OnBackPressed()
@@ -72,30 +101,6 @@ namespace Swell
         {
             int id = item.ItemId;
 
-            if (id == Resource.Id.nav_camera)
-            {
-                // Handle the camera action
-            }
-            else if (id == Resource.Id.nav_gallery)
-            {
-
-            }
-            else if (id == Resource.Id.nav_slideshow)
-            {
-
-            }
-            else if (id == Resource.Id.nav_manage)
-            {
-
-            }
-            else if (id == Resource.Id.nav_share)
-            {
-
-            }
-            else if (id == Resource.Id.nav_send)
-            {
-
-            }
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
