@@ -71,14 +71,12 @@ namespace Swell
             }
         }
 
-        public bool OnNavigationItemSelected(IMenuItem item)
+        public bool OnNavigationItemSelected(IMenuItem item) // Actions for the main menu items
         {
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
-
-
-            Toast.MakeText(this, "Hello world", ToastLength.Short).Show();
+            Toast.MakeText(this, item.TitleFormatted, ToastLength.Short).Show();
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
@@ -104,12 +102,12 @@ namespace Swell
             return true;
         }
 
-        public override bool OnOptionsItemSelected(IMenuItem item)
+        public override bool OnOptionsItemSelected(IMenuItem item) // Actions for the settings menu (top right corner of screen)
         {
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
-            Toast.MakeText(this, item.SubMenu.ToString(), ToastLength.Short).Show();
+            Toast.MakeText(this, item.TitleFormatted, ToastLength.Short).Show();
 
 
             if (id == Resource.Id.action_settings)
