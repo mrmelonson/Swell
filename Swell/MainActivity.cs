@@ -21,6 +21,7 @@ namespace Swell
     {
         private CancellationTokenSource cts;
         private int ServerCount;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -59,15 +60,14 @@ namespace Swell
 
             IMenu menu = navigationView.Menu;
             ISubMenu submenu = menu.AddSubMenu("Servers");
-
             var client = new DigitalOcean.API.DigitalOceanClient(API_KEY.Key.ToString());
             var droplets = await client.Droplets.GetAll();
-            var dropdata = new Array[droplets.Count, 100];
+            dropdata = new Array[droplets.Count, 100];
             ServerCount = droplets.Count;
 
             for (int i = 0; i < droplets.Count; i++)
             {
-                submenu.Add(i, i, i, droplets[i].Name);
+                submenu.Add(i, Menu.First, Menu.First + i, droplets[i].Name);
             }
         }
 
@@ -76,9 +76,7 @@ namespace Swell
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
-
-
-            Toast.MakeText(this, "Hello world", ToastLength.Short).Show();
+            Toast.MakeText(this, item.TitleFormatted, ToastLength.Short).Show();
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
