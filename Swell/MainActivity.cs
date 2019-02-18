@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DigitalOcean.API;
 using Android.Widget;
+using System.Collections.Generic;
 
 namespace Swell
 {
@@ -21,6 +22,7 @@ namespace Swell
     {
         private CancellationTokenSource cts;
         private int ServerCount;
+        private IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -61,8 +63,8 @@ namespace Swell
             ISubMenu submenu = menu.AddSubMenu("Servers");
 
             var client = new DigitalOcean.API.DigitalOceanClient(API_KEY.Key.ToString());
-            var droplets = await client.Droplets.GetAll();
-            var dropdata = new Array[droplets.Count, 100];
+            droplets = await client.Droplets.GetAll();
+            //var dropdata = new Array[droplets.Count, 100];
             ServerCount = droplets.Count;
 
             for (int i = 0; i < droplets.Count; i++)
@@ -71,15 +73,24 @@ namespace Swell
             }
         }
 
+        public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
+        {
+            var client = new DigitalOceanClient(API_KEY.Key.ToString());
+            var droplets = await client.Droplets.GetAll();
+            var dropdata = new Array[droplets.Count, 100];
+            return droplets;
+        }
+
         public bool OnNavigationItemSelected(IMenuItem item) // Actions for the main menu items
         {
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-
-            Toast.MakeText(this, item.TitleFormatted, ToastLength.Short).Show();
-
+            Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
+            TextView text = FindViewById<TextView>(Resource.Id.Maintext);
+            text.Text = droplets[id].Name;
+
             return true;
         }
 
