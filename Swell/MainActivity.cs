@@ -30,14 +30,14 @@ namespace Swell
 
             //RIGHT HERE IS THE MENU SHIT WORKING PROGMATTICALLY
 
-            StartUpdate(); // Start updating UI
+            StartUpdate(-1); // Start updating UI
         }
 
-        public void StartUpdate()
+        public void StartUpdate(int id)
         {
             if (cts != null) cts.Cancel();
             cts = new CancellationTokenSource();
-            var ignore = UpdaterAsync(cts.Token, -1);
+            var ignore = UpdaterAsync(cts.Token, id);
         }
 
         public void StopUpdate() // To stop Updating
@@ -46,8 +46,10 @@ namespace Swell
             cts = null;
         }
 
+
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
+            
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
@@ -60,6 +62,7 @@ namespace Swell
             navigationView.SetNavigationItemSelectedListener(this);
 
             IMenu menu = navigationView.Menu;
+            menu.Clear();
             ISubMenu submenu = menu.AddSubMenu("Servers");
 
             var client = new DigitalOcean.API.DigitalOceanClient(API_KEY.Key.ToString());
@@ -72,10 +75,12 @@ namespace Swell
                 submenu.Add(i, i, i, droplets[i].Name);
             }
 
-
             if (id >= 0)
             {
-
+                TextView text = FindViewById<TextView>(Resource.Id.Titletext);
+                TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
+                text.Text = droplets[id].Name;
+                subtext.Text = "Number of CPUs: " + droplets[id].Vcpus.ToString();
             }
 
         }
@@ -95,8 +100,7 @@ namespace Swell
             Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
-            TextView text = FindViewById<TextView>(Resource.Id.Maintext);
-            text.Text = droplets[id].Name;
+            StartUpdate(id);
 
             return true;
         }
