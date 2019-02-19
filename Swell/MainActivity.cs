@@ -37,7 +37,7 @@ namespace Swell
         {
             if (cts != null) cts.Cancel();
             cts = new CancellationTokenSource();
-            var ignore = UpdaterAsync(cts.Token);
+            var ignore = UpdaterAsync(cts.Token, -1);
         }
 
         public void StopUpdate() // To stop Updating
@@ -46,7 +46,7 @@ namespace Swell
             cts = null;
         }
 
-        public async Task UpdaterAsync(CancellationToken ct)
+        public async Task UpdaterAsync(CancellationToken ct, int id)
         {
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -71,6 +71,13 @@ namespace Swell
             {
                 submenu.Add(i, i, i, droplets[i].Name);
             }
+
+
+            if (id >= 0)
+            {
+
+            }
+
         }
 
         public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
