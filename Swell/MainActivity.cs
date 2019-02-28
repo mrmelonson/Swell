@@ -91,12 +91,13 @@ namespace Swell
         public bool OnNavigationItemSelected(IMenuItem item) // Actions for the main menu items
         {
             int id = item.ItemId;
+            TextView text = FindViewById<TextView>(Resource.Id.Maintext);
+            text.Text = droplets[id].Name; 
+
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
-            TextView text = FindViewById<TextView>(Resource.Id.Maintext);
-            text.Text = droplets[id].Name;
 
             return true;
         }
