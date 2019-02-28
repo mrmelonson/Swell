@@ -21,8 +21,8 @@ namespace Swell
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         private CancellationTokenSource cts;
-        private int ServerCount;
-        private IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets;
+        //private int ServerCount;
+        //private IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -66,25 +66,27 @@ namespace Swell
             ISubMenu submenu = menu.AddSubMenu("Servers");
 
             var client = new DigitalOcean.API.DigitalOceanClient(API_KEY.Key.ToString());
-            droplets = await client.Droplets.GetAll();
+            var droplets = await client.Droplets.GetAll();
             //var dropdata = new Array[droplets.Count, 100];
-            ServerCount = droplets.Count;
+            var ServerCount = droplets.Count;
 
             for (int i = 0; i < droplets.Count; i++)
             {
                 submenu.Add(i, i, i, droplets[i].Name);
             }
-
-            if (id >= 0)
-            {
-                TextView text = FindViewById<TextView>(Resource.Id.Titletext);
-                TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
-                text.Text = droplets[id].Name;
-                subtext.Text = "Number of CPUs: " + droplets[id].Vcpus.ToString();
-            }
-
+            CreateScreen(id, droplets);
         }
 
+        public void CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
+        {
+            if (id < 0) { return; }
+            TextView text = FindViewById<TextView>(Resource.Id.Titletext);
+            TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
+            text.Text = droplets[id].Name;
+            subtext.Text = droplets[id].Image.Slug;
+        }
+
+        /*
         public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
         {
             var client = new DigitalOceanClient(API_KEY.Key.ToString());
@@ -92,12 +94,13 @@ namespace Swell
             var dropdata = new Array[droplets.Count, 100];
             return droplets;
         }
+        */
 
         public bool OnNavigationItemSelected(IMenuItem item) // Actions for the main menu items
         {
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-            Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
+            //Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
             StartUpdate(id);
