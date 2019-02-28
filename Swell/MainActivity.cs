@@ -69,7 +69,6 @@ namespace Swell
             var droplets = await client.Droplets.GetAll();
             //var dropdata = new Array[droplets.Count, 100];
             var ServerCount = droplets.Count;
-
             for (int i = 0; i < droplets.Count; i++)
             {
                 submenu.Add(i, i, i, droplets[i].Name);
@@ -79,6 +78,7 @@ namespace Swell
 
         public void CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
         {
+            //here is my new function
             if (id < 0) { return; }
             TextView text = FindViewById<TextView>(Resource.Id.Titletext);
             TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
