@@ -65,9 +65,8 @@ namespace Swell
             menu.Clear();
             ISubMenu submenu = menu.AddSubMenu("Servers");
 
-            var client = new DigitalOcean.API.DigitalOceanClient(API_KEY.Key.ToString());
-            var droplets = await client.Droplets.GetAll();
-            //var dropdata = new Array[droplets.Count, 100];
+            var droplets = await GetServerInfo();
+            
             var ServerCount = droplets.Count;
             for (int i = 0; i < droplets.Count; i++)
             {
@@ -86,7 +85,6 @@ namespace Swell
             subtext.Text = droplets[id].Image.Slug;
         }
 
-        /*
         public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
         {
             var client = new DigitalOceanClient(API_KEY.Key.ToString());
@@ -94,7 +92,6 @@ namespace Swell
             var dropdata = new Array[droplets.Count, 100];
             return droplets;
         }
-        */
 
         public bool OnNavigationItemSelected(IMenuItem item) // Actions for the main menu items
         {
