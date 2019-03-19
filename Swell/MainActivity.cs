@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 using DigitalOcean.API;
 using Android.Widget;
 using System.Collections.Generic;
-using Xamarin.Forms;
+using Android.Content;
+ 
 
 namespace Swell
 {
@@ -25,7 +26,6 @@ namespace Swell
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-
             //RIGHT HERE IS THE MENU SHIT WORKING PROGMATTICALLY
 
             StartUpdate(-1); // Start updating UI
@@ -72,7 +72,7 @@ namespace Swell
                 submenu.Add(i, i, i, droplets[i].Name);
             }
             await CreateScreen(id, droplets);
-
+            
         }
 
 
@@ -86,9 +86,9 @@ namespace Swell
             text.Text = droplets[id].Name;
             subtext.Text = droplets[id].Image.Slug;
             Android.Widget.Switch switcher = FindViewById<Android.Widget.Switch>(Resource.Id.switch1);
-            if (droplets[id].Status == "Active" && switcher.Checked == true)
+            if (droplets[id].Status == "active")
             {
-                switcher.Checked = false;
+                switcher.Checked = true;
             }
             switcher.Click += async (o, e) =>
             {
@@ -99,9 +99,24 @@ namespace Swell
                 }
                 else
                 {
-                    var answer = await DisplayAlert("Warning", "Turning Your droplet off may cause a hard shutdown which can cause corruption. We recommend you shutdown any processes through a command line first.", "Cancel", "OK");
-                    Toast.MakeText(this, "Off", ToastLength.Short).Show();
-                    var action = await client.DropletActions.PowerOff(droplets[id].Id);
+                    bool originalState = switcher.Checked;
+                    Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+                    Android.App.AlertDialog alert = dialog.Create();
+                    alert.SetTitle("Warning");
+                    alert.SetMessage("Turning your droplet off may cause a hard shutdown which can cause file corruption.\nWe recommend you shutdown any processes through a command line first.");
+                    alert.SetButton3("Cancel", (c, v) => {
+                        switcher.Checked = true;
+                        return;
+                    });
+                    alert.SetOnDismissListener(Onclick);
+                    alert.SetButton("Power Off", async (c, v) =>
+                    {
+                        switcher.Checked = false;
+                        var action = await client.DropletActions.PowerOff(droplets[id].Id);
+                        return;
+                    });
+                    alert.Show();
+                    switcher.Checked = originalState;
                 }
             };
         }
