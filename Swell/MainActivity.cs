@@ -49,7 +49,8 @@ namespace Swell
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
-            
+            TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
+            subtext.Text = ct.ToString();
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
