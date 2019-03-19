@@ -17,7 +17,12 @@
         android:id="@+id/InfoText"
         android:text="hello1"
         android:layout_width="match_parent"
-        android:layout_height="524.0dp"
+        android:layout_height="19.5dp"
         android:textColor="@android:color/black"
         android:layout_marginTop="37.5dp" />
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/InfoText"
+        android:id="@+id/switch1" />
 </RelativeLayout>

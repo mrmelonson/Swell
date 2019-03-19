@@ -1,19 +1,17 @@
 ﻿using System;
-using Android;
 using Android.App;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
-using Android.Support.V7.Widget;
 using Android.Views;
 using System.Threading;
 using System.Threading.Tasks;
 using DigitalOcean.API;
 using Android.Widget;
 using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace Swell
 {
@@ -72,17 +70,39 @@ namespace Swell
             {
                 submenu.Add(i, i, i, droplets[i].Name);
             }
-            CreateScreen(id, droplets);
+            await CreateScreen(id, droplets);
+
         }
 
-        public void CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
+
+        public async Task CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
         {
             //here is my new function
             if (id < 0) { return; }
+            var client = new DigitalOceanClient(API_KEY.Key.ToString());
             TextView text = FindViewById<TextView>(Resource.Id.Titletext);
             TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
             text.Text = droplets[id].Name;
             subtext.Text = droplets[id].Image.Slug;
+            Android.Widget.Switch switcher = FindViewById<Android.Widget.Switch>(Resource.Id.switch1);
+            if (droplets[id].Status == "Active" && switcher.Checked == true)
+            {
+                switcher.Checked = false;
+            }
+            switcher.Click += async (o, e) =>
+            {
+                if (switcher.Checked)
+                {
+                    Toast.MakeText(this, "On", ToastLength.Short).Show();
+                    var action = await client.DropletActions.PowerOn(droplets[id].Id);
+                }
+                else
+                {
+                    var answer = await DisplayAlert("Warning", "Turning Your droplet off may cause a hard shutdown which can cause corruption. We recommend you shutdown any processes through a command line first.", "Cancel", "OK");
+                    Toast.MakeText(this, "Off", ToastLength.Short).Show();
+                    var action = await client.DropletActions.PowerOff(droplets[id].Id);
+                }
+            };
         }
 
         public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
