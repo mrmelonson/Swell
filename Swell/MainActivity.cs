@@ -26,7 +26,6 @@ namespace Swell
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-            //RIGHT HERE IS THE MENU SHIT WORKING PROGMATTICALLY
 
             StartUpdate(-1); // Start updating UI
         }
@@ -108,7 +107,7 @@ namespace Swell
                         switcher.Checked = true;
                         return;
                     });
-                    alert.SetOnDismissListener(Onclick);
+                    alert.SetCancelable(false);
                     alert.SetButton("Power Off", async (c, v) =>
                     {
                         switcher.Checked = false;
