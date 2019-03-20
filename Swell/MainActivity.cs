@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 using DigitalOcean.API;
 using Android.Widget;
 using System.Collections.Generic;
-using Android.Content;
- 
+using Android.Graphics;
 
 namespace Swell
 {
@@ -46,8 +45,6 @@ namespace Swell
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
-            TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
-            subtext.Text = ct.ToString();
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
@@ -80,17 +77,34 @@ namespace Swell
             //here is my new function
             if (id < 0) { return; }
             var client = new DigitalOceanClient(API_KEY.Key.ToString());
-            TextView text = FindViewById<TextView>(Resource.Id.Titletext);
-            TextView subtext = FindViewById<TextView>(Resource.Id.InfoText);
-            text.Text = droplets[id].Name;
-            subtext.Text = droplets[id].Image.Slug;
-            Android.Widget.Switch switcher = FindViewById<Android.Widget.Switch>(Resource.Id.switch1);
+            /*
+            FindViewById<TextView>(Resource.Id.title).Text = droplets[id].Name;
+            
+            FindViewById<TextView>(Resource.Id.cpu).Text = "Cpus: "+droplets[id].Vcpus.ToString();
+            FindViewById<TextView>(Resource.Id.memory).Text = "Memory: " + droplets[id].Memory.ToString() + "gb";
+            FindViewById<TextView>(Resource.Id.disk).Text = "Disk: " + droplets[id].Disk.ToString() + "gb";
+            FindViewById<TextView>(Resource.Id.os).Text = "Os: " + droplets[id].Image.Name;
+            FindViewById<TextView>(Resource.Id.kernel).Text = "Kernel Version: " + droplets[id].Kernel.Version;
+            */
+            FindViewById<TextView>(Resource.Id.imgsize).Text = "Image Size: " + droplets[id].Image.SizeGigabytes.ToString() + "gb";
+            FindViewById<TextView>(Resource.Id.region).Text = "Region: " + droplets[id].Region.Name;
+            TextView statustext = FindViewById<TextView>(Resource.Id.status);
+            statustext.Text = "Status: " + droplets[id].Status;
+            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             if (droplets[id].Status == "active")
             {
                 switcher.Checked = true;
-            }
-            switcher.Click += async (o, e) =>
+                statustext.SetTextColor(Color.ParseColor("#32CD32"));
+            } else if (droplets[id].Status == "off")
             {
+                statustext.SetTextColor(Color.ParseColor("#C43F3F"));
+            } else
+            {
+                statustext.SetTextColor(Color.ParseColor("#FFFF33 "));
+            }
+
+            switcher.Click += async (o, e) => {
+                droplets = await GetServerInfo();
                 if (switcher.Checked)
                 {
                     Toast.MakeText(this, "On", ToastLength.Short).Show();
@@ -102,17 +116,15 @@ namespace Swell
                     Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
                     Android.App.AlertDialog alert = dialog.Create();
                     alert.SetTitle("Warning");
-                    alert.SetMessage("Turning your droplet off may cause a hard shutdown which can cause file corruption.\nWe recommend you shutdown any processes through a command line first.");
+                    alert.SetMessage("Turning your droplet off may cause a hard shutdown which can cause file corruption.\n\nWe recommend you shutdown any processes through a command line first.");
                     alert.SetButton3("Cancel", (c, v) => {
                         switcher.Checked = true;
-                        return;
                     });
                     alert.SetCancelable(false);
                     alert.SetButton("Power Off", async (c, v) =>
                     {
                         switcher.Checked = false;
                         var action = await client.DropletActions.PowerOff(droplets[id].Id);
-                        return;
                     });
                     alert.Show();
                     switcher.Checked = originalState;
