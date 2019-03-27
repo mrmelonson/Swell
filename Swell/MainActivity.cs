@@ -77,38 +77,21 @@ namespace Swell
             //here is my new function
             if (id < 0) { return; }
             var client = new DigitalOceanClient(API_KEY.Key.ToString());
-            /*
-            FindViewById<TextView>(Resource.Id.title).Text = droplets[id].Name;
-            
-            FindViewById<TextView>(Resource.Id.cpu).Text = "Cpus: "+droplets[id].Vcpus.ToString();
-            FindViewById<TextView>(Resource.Id.memory).Text = "Memory: " + droplets[id].Memory.ToString() + "gb";
-            FindViewById<TextView>(Resource.Id.disk).Text = "Disk: " + droplets[id].Disk.ToString() + "gb";
-            FindViewById<TextView>(Resource.Id.os).Text = "Os: " + droplets[id].Image.Name;
-            FindViewById<TextView>(Resource.Id.kernel).Text = "Kernel Version: " + droplets[id].Kernel.Version;
-            */
-            FindViewById<TextView>(Resource.Id.imgsize).Text = "Image Size: " + droplets[id].Image.SizeGigabytes.ToString() + "gb";
-            FindViewById<TextView>(Resource.Id.region).Text = "Region: " + droplets[id].Region.Name;
-            TextView statustext = FindViewById<TextView>(Resource.Id.status);
-            statustext.Text = "Status: " + droplets[id].Status;
+
+            await UpdateInfo(id);
+
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             if (droplets[id].Status == "active")
             {
                 switcher.Checked = true;
-                statustext.SetTextColor(Color.ParseColor("#32CD32"));
             } else if (droplets[id].Status == "off")
-            {
-                statustext.SetTextColor(Color.ParseColor("#C43F3F"));
-            } else
-            {
-                statustext.SetTextColor(Color.ParseColor("#FFFF33 "));
-            }
 
             switcher.Click += async (o, e) => {
-                droplets = await GetServerInfo();
                 if (switcher.Checked)
                 {
-                    Toast.MakeText(this, "On", ToastLength.Short).Show();
                     var action = await client.DropletActions.PowerOn(droplets[id].Id);
+                    Toast.MakeText(this, "On", ToastLength.Short).Show();
+                    await UpdateInfo(id);
                 }
                 else
                 {
@@ -128,8 +111,45 @@ namespace Swell
                     });
                     alert.Show();
                     switcher.Checked = originalState;
+                    //await UpdateInfo(id);
                 }
             };
+        }
+
+        public async Task UpdateInfo(int id)
+        {
+            var droplets = await GetServerInfo();
+
+            /*
+            FindViewById<TextView>(Resource.Id.title).Text = droplets[id].Name;
+            
+            FindViewById<TextView>(Resource.Id.cpu).Text = "Cpus: "+droplets[id].Vcpus.ToString();
+            FindViewById<TextView>(Resource.Id.memory).Text = "Memory: " + droplets[id].Memory.ToString() + "gb";
+            FindViewById<TextView>(Resource.Id.disk).Text = "Disk: " + droplets[id].Disk.ToString() + "gb";
+            FindViewById<TextView>(Resource.Id.os).Text = "Os: " + droplets[id].Image.Name;
+            FindViewById<TextView>(Resource.Id.kernel).Text = "Kernel Version: " + droplets[id].Kernel.Version;
+            */
+
+            FindViewById<TextView>(Resource.Id.imgsize).Text = "Image Size: " + droplets[id].Image.SizeGigabytes.ToString() + "gb";
+            FindViewById<TextView>(Resource.Id.region).Text = "Region: " + droplets[id].Region.Name;
+            TextView statustext = FindViewById<TextView>(Resource.Id.status);
+            statustext.Text = "Status: " + droplets[id].Status;
+
+            if (droplets[id].Status == "active")
+            {
+                statustext.SetTextColor(Color.ParseColor("#32CD32"));
+            }
+            else if (droplets[id].Status == "off")
+            {
+                statustext.SetTextColor(Color.ParseColor("#C43F3F"));
+            }
+            else
+            {
+                statustext.SetTextColor(Color.ParseColor("#FFFF33 "));
+            }
+
+            return;
+
         }
 
         public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
