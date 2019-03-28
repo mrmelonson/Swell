@@ -71,32 +71,74 @@ namespace Swell
             
         }
 
+        public async Task Nav_menu_create()
+        {
+
+        }
+
 
         public async Task CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
         {
             //here is my new function
             if (id < 0) { return; }
             var client = new DigitalOceanClient(API_KEY.Key.ToString());
-
+            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
+            TextView statustext = FindViewById<TextView>(Resource.Id.status);
             await UpdateInfo(id);
 
-            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
-            if (droplets[id].Status == "active")
-            {
-                switcher.Checked = true;
-            } else if (droplets[id].Status == "off")
+            switcher.Click += async (o, e) =>
+             {
+                 if (switcher.Checked)
+                 {
+                     var action = await client.DropletActions.PowerOn(droplets[id].Id);
+                     var actionget = await client.Actions.Get(action.Id);
+                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                     while (actionget.Status != "completed")
+                     {
+                         actionget = await client.Actions.Get(action.Id);
+                         statustext.Text = "Powering On";
+                         statustext.SetTextColor(Color.ParseColor("#FFFF33"));
+                     }
+                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                     await UpdateInfo(id);
+                     Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+                 }
+                 else if (switcher.Checked == false)
+                 {
+                     var action = await client.DropletActions.PowerOff(droplets[id].Id);
+                     var actionget = await client.Actions.Get(action.Id);
+                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                     while (actionget.Status != "completed")
+                     {
+                         actionget = await client.Actions.Get(action.Id);
+                         statustext.Text = "Shutting down";
+                         statustext.SetTextColor(Color.ParseColor("#FFFF33"));
+                     }
+                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                     await UpdateInfo(id);
+                     Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+                 }
+             };
 
+
+
+
+
+
+            /*
             switcher.Click += async (o, e) => {
                 if (switcher.Checked)
                 {
                     var action = await client.DropletActions.PowerOn(droplets[id].Id);
                     Toast.MakeText(this, "On", ToastLength.Short).Show();
                     await UpdateInfo(id);
+                    Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+                    return;
                 }
-                else
+                else if(switcher.Checked == false)
                 {
-                    bool originalState = switcher.Checked;
-                    Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+                    //bool originalState = switcher.Checked;
+                    /*Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
                     Android.App.AlertDialog alert = dialog.Create();
                     alert.SetTitle("Warning");
                     alert.SetMessage("Turning your droplet off may cause a hard shutdown which can cause file corruption.\n\nWe recommend you shutdown any processes through a command line first.");
@@ -108,12 +150,21 @@ namespace Swell
                     {
                         switcher.Checked = false;
                         var action = await client.DropletActions.PowerOff(droplets[id].Id);
+                        Toast.MakeText(this, "Off", ToastLength.Short).Show();
+                        await UpdateInfo(id);
+                        Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
                     });
-                    alert.Show();
-                    switcher.Checked = originalState;
-                    //await UpdateInfo(id);
+                    alert.Show(); 
+                    //switcher.Checked = originalState; 
+                    var action = await client.DropletActions.PowerOff(droplets[id].Id);
+                    await UpdateInfo(id);
+                    Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+                    return;
                 }
-            };
+            };*/
+            
+
+            return;
         }
 
         public async Task UpdateInfo(int id)
@@ -122,13 +173,13 @@ namespace Swell
 
             /*
             FindViewById<TextView>(Resource.Id.title).Text = droplets[id].Name;
-            
+            */
             FindViewById<TextView>(Resource.Id.cpu).Text = "Cpus: "+droplets[id].Vcpus.ToString();
             FindViewById<TextView>(Resource.Id.memory).Text = "Memory: " + droplets[id].Memory.ToString() + "gb";
             FindViewById<TextView>(Resource.Id.disk).Text = "Disk: " + droplets[id].Disk.ToString() + "gb";
             FindViewById<TextView>(Resource.Id.os).Text = "Os: " + droplets[id].Image.Name;
-            FindViewById<TextView>(Resource.Id.kernel).Text = "Kernel Version: " + droplets[id].Kernel.Version;
-            */
+            //FindViewById<TextView>(Resource.Id.kernel).Text = "Kernel Version: " + droplets[id].Kernel.Version.ToString();
+            
 
             FindViewById<TextView>(Resource.Id.imgsize).Text = "Image Size: " + droplets[id].Image.SizeGigabytes.ToString() + "gb";
             FindViewById<TextView>(Resource.Id.region).Text = "Region: " + droplets[id].Region.Name;
@@ -145,7 +196,17 @@ namespace Swell
             }
             else
             {
-                statustext.SetTextColor(Color.ParseColor("#FFFF33 "));
+                statustext.SetTextColor(Color.ParseColor("#FFFF33"));
+            }
+
+            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
+            if (droplets[id].Status == "active")
+            {
+                switcher.Checked = true;
+            }
+            else
+            {
+                switcher.Checked = false;
             }
 
             return;
