@@ -123,52 +123,6 @@ namespace Swell
                  };
                  h.PostDelayed(EnableSwitcher, 10000);
              };
-
-
-
-
-
-
-            /*
-            switcher.Click += async (o, e) => {
-                if (switcher.Checked)
-                {
-                    var action = await client.DropletActions.PowerOn(droplets[id].Id);
-                    Toast.MakeText(this, "On", ToastLength.Short).Show();
-                    await UpdateInfo(id);
-                    Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
-                    return;
-                }
-                else if(switcher.Checked == false)
-                {
-                    //bool originalState = switcher.Checked;
-                    /*Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
-                    Android.App.AlertDialog alert = dialog.Create();
-                    alert.SetTitle("Warning");
-                    alert.SetMessage("Turning your droplet off may cause a hard shutdown which can cause file corruption.\n\nWe recommend you shutdown any processes through a command line first.");
-                    alert.SetButton3("Cancel", (c, v) => {
-                        switcher.Checked = true;
-                    });
-                    alert.SetCancelable(false);
-                    alert.SetButton("Power Off", async (c, v) =>
-                    {
-                        switcher.Checked = false;
-                        var action = await client.DropletActions.PowerOff(droplets[id].Id);
-                        Toast.MakeText(this, "Off", ToastLength.Short).Show();
-                        await UpdateInfo(id);
-                        Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
-                    });
-                    alert.Show(); 
-                    //switcher.Checked = originalState; 
-                    var action = await client.DropletActions.PowerOff(droplets[id].Id);
-                    await UpdateInfo(id);
-                    Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
-                    return;
-                }
-            };*/
-            
-
-            return;
         }
 
         public async Task UpdateInfo(int id)
