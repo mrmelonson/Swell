@@ -13,6 +13,7 @@ using Android.Widget;
 using System.Collections.Generic;
 using Android.Graphics;
 
+
 namespace Swell
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
@@ -71,11 +72,6 @@ namespace Swell
             
         }
 
-        public async Task Nav_menu_create()
-        {
-
-        }
-
 
         public async Task CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
         {
@@ -88,6 +84,7 @@ namespace Swell
 
             switcher.Click += async (o, e) =>
              {
+                 switcher.Enabled = false;
                  if (switcher.Checked)
                  {
                      var action = await client.DropletActions.PowerOn(droplets[id].Id);
@@ -97,7 +94,7 @@ namespace Swell
                      {
                          actionget = await client.Actions.Get(action.Id);
                          statustext.Text = "Powering On";
-                         statustext.SetTextColor(Color.ParseColor("#FFFF33"));
+                         statustext.SetTextColor(Color.ParseColor("#FF8C00"));
                      }
                      Toast.MakeText(this, action.Status, ToastLength.Short).Show();
                      await UpdateInfo(id);
@@ -112,12 +109,19 @@ namespace Swell
                      {
                          actionget = await client.Actions.Get(action.Id);
                          statustext.Text = "Shutting down";
-                         statustext.SetTextColor(Color.ParseColor("#FFFF33"));
+                         statustext.SetTextColor(Color.ParseColor("#FF8C00"));
                      }
                      Toast.MakeText(this, action.Status, ToastLength.Short).Show();
                      await UpdateInfo(id);
                      Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
                  }
+                 //switcher.Enabled = true;
+                 Handler h = new Handler();
+                 Action EnableSwitcher = () =>
+                 {
+                     switcher.Enabled = true;
+                 };
+                 h.PostDelayed(EnableSwitcher, 10000);
              };
 
 
@@ -196,7 +200,7 @@ namespace Swell
             }
             else
             {
-                statustext.SetTextColor(Color.ParseColor("#FFFF33"));
+                statustext.SetTextColor(Color.ParseColor("#FF8C00"));
             }
 
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
