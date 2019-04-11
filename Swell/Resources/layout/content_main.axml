@@ -13,6 +13,24 @@
 		android:minHeight="25px"
 		android:id="@+id/name" />
 	<TextView
+		android:text="IPv4"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/ip_v4"/>
+	<TextView
+		android:text="IPv6"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/ip_v6"/>
+	<TextView
+		android:text="IP Priv"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/ip_priv"/>
+	<TextView
 		android:text="Specs"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="match_parent"

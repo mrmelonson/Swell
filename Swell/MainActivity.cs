@@ -131,11 +131,25 @@ namespace Swell
 
 
             FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
-            
+            FindViewById<TextView>(Resource.Id.ip_v4).Text = "IPv4: " + droplets[id].Networks.v4[0].IpAddress;
+
+            FindViewById<TextView>(Resource.Id.ip_v6).Text = "IPv6: Not enabled";
+            foreach (var feature in droplets[id].Features)
+            {
+                if(feature == "ipv6")
+                {
+                    FindViewById<TextView>(Resource.Id.ip_v6).Text = "IPv6: " + droplets[id].Networks.v6[0].IpAddress;
+                }
+            }
+
+
+            //FindViewById<TextView>(Resource.Id.ip_v4).Text = droplets[id].Networks.v6.ToString();
+
+
             FindViewById<TextView>(Resource.Id.cpu).Text = "Cpus: "+droplets[id].Vcpus.ToString();
             FindViewById<TextView>(Resource.Id.memory).Text = "Memory: " + droplets[id].Memory.ToString() + "gb";
             FindViewById<TextView>(Resource.Id.disk).Text = "Disk: " + droplets[id].Disk.ToString() + "gb";
-            FindViewById<TextView>(Resource.Id.os).Text = "Os: " + droplets[id].Image.Name;
+            FindViewById<TextView>(Resource.Id.os).Text = "Os: " + droplets[id].Image.Distribution + " " + droplets[id].Image.Name;
             //FindViewById<TextView>(Resource.Id.kernel).Text = "Kernel Version: " + droplets[id].Kernel.Version.ToString();
             
 
