@@ -129,9 +129,9 @@ namespace Swell
         {
             var droplets = await GetServerInfo();
 
-            /*
-            FindViewById<TextView>(Resource.Id.title).Text = droplets[id].Name;
-            */
+
+            FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
+            
             FindViewById<TextView>(Resource.Id.cpu).Text = "Cpus: "+droplets[id].Vcpus.ToString();
             FindViewById<TextView>(Resource.Id.memory).Text = "Memory: " + droplets[id].Memory.ToString() + "gb";
             FindViewById<TextView>(Resource.Id.disk).Text = "Disk: " + droplets[id].Disk.ToString() + "gb";

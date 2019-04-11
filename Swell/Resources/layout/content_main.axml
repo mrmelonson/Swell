@@ -2,110 +2,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:text="Name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:id="@+id/name" />
-    <TextView
-        android:text="IPv4"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ipvfour" />
-    <TextView
-        android:text="IPv6"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ipv" />
-    <TextView
-        android:text="IPpriv"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ippriv" />
-    <TextView
-        android:text="Specs"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/specs" />
-    <TextView
-        android:text="Cpu"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cpu"
-        android:layout_marginLeft="20dp" />
-    <TextView
-        android:text="Memory"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/memory"
-        android:layout_marginLeft="20dp" />
-    <TextView
-        android:text="Disk"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/disk"
-        android:layout_marginLeft="20dp" />
-    <TextView
-        android:text="Image"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/image" />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:text="Os"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/os" />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:text="kernel ver"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/kernel" />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:text="Image Size"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/imgsize" />
-    <TextView
-        android:text="Info"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/info" />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:text="region"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/region" />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:text="Status"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/status" />
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/switch1"
-        android:layout_marginRight="150.0dp" />
+    android:layout_height="match_parent"
+	android:layout_marginTop="60dp">
+	<TextView
+		android:text="Name"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:id="@+id/name" />
+	<TextView
+		android:text="Specs"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/specs" />
+	<TextView
+		android:text="Cpu"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/cpu"
+		android:layout_marginLeft="20dp" />
+	<TextView
+		android:text="Memory"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/memory"
+		android:layout_marginLeft="20dp"/>
+	<TextView
+		android:text="Disk"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/disk"
+		android:layout_marginLeft="20dp"/>
+	<TextView
+		android:text="Image"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/image" />
+	<TextView
+		android:layout_marginLeft="20dp"
+		android:text="Os"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/os" />
+	<TextView
+		android:layout_marginLeft="20dp"
+		android:text="Image Size"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/imgsize" />
+	<TextView
+		android:text="Info"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/info" />
+	<TextView
+		android:layout_marginLeft="20dp"
+		android:text="region"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/region" />
+	<TextView
+		android:layout_marginLeft="20dp"
+		android:text="Status"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/status" />
+	<Switch
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/switch1"
+		android:layout_marginRight="150.0dp" />
+
 </LinearLayout>
