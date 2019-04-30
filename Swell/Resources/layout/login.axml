@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center">
+	<TextView
+		android:text="Swell"
+		android:textSize="30sp"
+		android:textColor="@android:color/black"
+		android:layout_width="match_parent"
+		android:layout_height="100px"
+		android:gravity="center"/>
+	<TextView
+		android:text="Enter Api Key"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"/>
+	<EditText
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/editText1" />
+	<Button
+		android:text="Login"
+		android:gravity="center"
+		android:layout_width="99dp"
+		android:layout_height="wrap_content"
+		android:id="@+id/LoginButton"/>
+
+</LinearLayout>

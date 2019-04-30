@@ -20,12 +20,10 @@ namespace Swell
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         private CancellationTokenSource cts;
-        //private int ServerCount;
-        //private IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.login);
 
             StartUpdate(-1); // Start updating UI
         }
@@ -133,12 +131,17 @@ namespace Swell
             FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
             FindViewById<TextView>(Resource.Id.ip_v4).Text = "IPv4: " + droplets[id].Networks.v4[0].IpAddress;
 
-            FindViewById<TextView>(Resource.Id.ip_v6).Text = "IPv6: Not enabled";
+            FindViewById<TextView>(Resource.Id.ip_v6).Text = "IPv6: Not Enabled";
+            FindViewById<TextView>(Resource.Id.ip_priv).Text = "Priv Networking: Not Enabled";
             foreach (var feature in droplets[id].Features)
             {
                 if(feature == "ipv6")
                 {
                     FindViewById<TextView>(Resource.Id.ip_v6).Text = "IPv6: " + droplets[id].Networks.v6[0].IpAddress;
+                }
+                if (feature == "private_networking")
+                {
+                    FindViewById<TextView>(Resource.Id.ip_priv).Text = "Priv Networking: Enabled";
                 }
             }
 
@@ -153,7 +156,7 @@ namespace Swell
             //FindViewById<TextView>(Resource.Id.kernel).Text = "Kernel Version: " + droplets[id].Kernel.Version.ToString();
             
 
-            FindViewById<TextView>(Resource.Id.imgsize).Text = "Image Size: " + droplets[id].Image.SizeGigabytes.ToString() + "gb";
+            //FindViewById<TextView>(Resource.Id.imgsize).Text = "Image Size: " + droplets[id].Image.SizeGigabytes.ToString() + "gb";
             FindViewById<TextView>(Resource.Id.region).Text = "Region: " + droplets[id].Region.Name;
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
             statustext.Text = "Status: " + droplets[id].Status;
@@ -203,6 +206,11 @@ namespace Swell
             StartUpdate(id);
 
             return true;
+        }
+
+        public async Task Login()
+        {
+
         }
 
         public override void OnBackPressed()

@@ -19,17 +19,25 @@
 		android:layout_height="wrap_content"
 		android:id="@+id/ip_v4"/>
 	<TextView
+		android:text="Networking"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/specs" />
+	<TextView
 		android:text="IPv6"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/ip_v6"/>
+		android:id="@+id/ip_v6"
+		android:layout_marginLeft="20dp"/>
 	<TextView
 		android:text="IP Priv"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/ip_priv"/>
+		android:id="@+id/ip_priv"
+		android:layout_marginLeft="20dp"/>
 	<TextView
 		android:text="Specs"
 		android:textAppearance="?android:attr/textAppearanceMedium"
@@ -58,25 +66,12 @@
 		android:id="@+id/disk"
 		android:layout_marginLeft="20dp"/>
 	<TextView
-		android:text="Image"
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/image" />
-	<TextView
 		android:layout_marginLeft="20dp"
 		android:text="Os"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/os" />
-	<TextView
-		android:layout_marginLeft="20dp"
-		android:text="Image Size"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/imgsize" />
 	<TextView
 		android:text="Info"
 		android:textAppearance="?android:attr/textAppearanceMedium"
