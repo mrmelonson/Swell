@@ -12,7 +12,7 @@ using DigitalOcean.API;
 using Android.Widget;
 using System.Collections.Generic;
 using Android.Graphics;
-
+using Android.Content;
 
 namespace Swell
 {
@@ -20,11 +20,23 @@ namespace Swell
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         private CancellationTokenSource cts;
+        SharedPreferences prefs = this.getSharedPreferences(
+      "com.example.app", Context.MODE_PRIVATE);
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.login);
 
+            base.OnCreate(savedInstanceState);
+            Newtonsoft.Json.Jsoncover
+            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "\\key.txt");
+            string api_key = File.ReadAllText(path);
+            if (api_key == "")
+            {
+                Login();
+            }
+            else
+            {
+                SetContentView(Resource.Layout.activity_main);
+            }
             StartUpdate(-1); // Start updating UI
         }
 
@@ -44,6 +56,7 @@ namespace Swell
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
+
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
@@ -75,7 +88,7 @@ namespace Swell
         {
             //here is my new function
             if (id < 0) { return; }
-            var client = new DigitalOceanClient(API_KEY.Key.ToString());
+            var client = new DigitalOceanClient(API_KEY.Sdjalsdlsdkfjls.ToString());
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
             await UpdateInfo(id);
@@ -190,13 +203,13 @@ namespace Swell
 
         public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
         {
-            var client = new DigitalOceanClient(API_KEY.Key.ToString());
+            var client = new DigitalOceanClient(API_KEY.Sdjalsdlsdkfjls.ToString());
             var droplets = await client.Droplets.GetAll();
             var dropdata = new Array[droplets.Count, 100];
             return droplets;
         }
 
-        public bool OnNavigationItemSelected(IMenuItem item) // Actions for the main menu items
+        public bool OnNavigationItemSelected(IMenuItem item) //Actions for the main menu items
         {
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
@@ -210,7 +223,32 @@ namespace Swell
 
         public async Task Login()
         {
-
+            SetContentView(Resource.Layout.login);
+            Button loginButton = FindViewById<Button>(Resource.Id.LoginButton);
+            EditText Keyinput = FindViewById<EditText>(Resource.Id.editText1);
+            loginButton.Click += async (o, e) =>
+            {
+                //Toast.MakeText(this, "Hello", ToastLength.Short).Show();
+                var client = new DigitalOceanClient(Keyinput.Text);
+                //IResourceWriter writer = new ResourceWriter("API_KEY");
+                try
+                {
+                    var drops = await client.Droplets.GetAll();
+                    SetContentView(Resource.Layout.activity_main);
+                    //writer.AddResource("Key", Keyinput.Text);
+                    System.IO.File.WriteAllText(@"\Key.txt", Keyinput.Text);
+                    return;
+                }
+                catch (DigitalOcean.API.Exceptions.ApiException)
+                {
+                    Toast.MakeText(this, "Invalid API key", ToastLength.Short).Show();
+                }
+                catch (Exception err)
+                {
+                    Toast.MakeText(this, $"ERROR: {err}", ToastLength.Short).Show();
+                }
+                //Toast.MakeText(this, "Logged In", ToastLength.Short).Show();
+            };
         }
 
         public override void OnBackPressed()

@@ -61,11 +61,20 @@ namespace Swell {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 514020eb4a087b8307464e9bfbcff498b7fcafc56132ac4f7719622ba897e932.
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string Key {
             get {
                 return ResourceManager.GetString("Key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 514020eb4a087b8307464e9bfbcff498b7fcafc56132ac4f7719622ba897e932.
+        /// </summary>
+        internal static string Sdjalsdlsdkfjls {
+            get {
+                return ResourceManager.GetString("Sdjalsdlsdkfjls", resourceCulture);
             }
         }
     }
