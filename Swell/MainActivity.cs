@@ -13,6 +13,8 @@ using Android.Widget;
 using System.Collections.Generic;
 using Android.Graphics;
 using Android.Content;
+using Xamarin.Android;
+using Android.Preferences;
 
 namespace Swell
 {
@@ -20,16 +22,13 @@ namespace Swell
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         private CancellationTokenSource cts;
-        SharedPreferences prefs = this.getSharedPreferences(
-      "com.example.app", Context.MODE_PRIVATE);
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            string api_key = prefs.GetString("api_key", null);
 
             base.OnCreate(savedInstanceState);
-            Newtonsoft.Json.Jsoncover
-            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "\\key.txt");
-            string api_key = File.ReadAllText(path);
-            if (api_key == "")
+            if (api_key == null)
             {
                 Login();
             }
@@ -228,27 +227,35 @@ namespace Swell
             EditText Keyinput = FindViewById<EditText>(Resource.Id.editText1);
             loginButton.Click += async (o, e) =>
             {
-                //Toast.MakeText(this, "Hello", ToastLength.Short).Show();
-                var client = new DigitalOceanClient(Keyinput.Text);
-                //IResourceWriter writer = new ResourceWriter("API_KEY");
-                try
+                var err = AuthUser(Keyinput.Text);
+                /*
+                switch (err)
                 {
-                    var drops = await client.Droplets.GetAll();
-                    SetContentView(Resource.Layout.activity_main);
-                    //writer.AddResource("Key", Keyinput.Text);
-                    System.IO.File.WriteAllText(@"\Key.txt", Keyinput.Text);
-                    return;
+                    case (null):
+                        break;
+                    case (DigitalOcean.API.Exceptions.A):
+                        break;
+                    default:
+                        Toast.MakeText(this, "ERROR: " + err, ToastLength.Short).Show();
                 }
-                catch (DigitalOcean.API.Exceptions.ApiException)
-                {
-                    Toast.MakeText(this, "Invalid API key", ToastLength.Short).Show();
-                }
-                catch (Exception err)
-                {
-                    Toast.MakeText(this, $"ERROR: {err}", ToastLength.Short).Show();
-                }
-                //Toast.MakeText(this, "Logged In", ToastLength.Short).Show();
+                */
+                Toast.MakeText(this, "Logged In", ToastLength.Short).Show();
             };
+        }
+
+        public async Task<Exception> AuthUser(string api_key)
+        {
+            var client = new DigitalOceanClient(api_key);
+            try
+            {
+                var drops = await client.Droplets.GetAll();
+                return null;
+            }
+            catch (Exception err)
+            {
+                Toast.MakeText(this, "ERROR: " + err, ToastLength.Short).Show();
+                return err;
+            }
         }
 
         public override void OnBackPressed()
