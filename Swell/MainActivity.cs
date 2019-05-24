@@ -24,19 +24,17 @@ namespace Swell
         private CancellationTokenSource cts;
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            string api_key = prefs.GetString("api_key", null);
-
             base.OnCreate(savedInstanceState);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            var prefedits = prefs.Edit();
+            prefedits.PutString("api_key", null).Commit();
+            var api_key = prefs.GetString("api_key", null);
+
             if (api_key == null)
             {
+                SetContentView(Resource.Layout.login);
                 Login();
             }
-            else
-            {
-                SetContentView(Resource.Layout.activity_main);
-            }
-            StartUpdate(-1); // Start updating UI
         }
 
         public void StartUpdate(int id)
@@ -55,6 +53,7 @@ namespace Swell
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
+            SetContentView(Resource.Layout.activity_main);
 
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -87,7 +86,10 @@ namespace Swell
         {
             //here is my new function
             if (id < 0) { return; }
-            var client = new DigitalOceanClient(API_KEY.Sdjalsdlsdkfjls.ToString());
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+
+            var api_key = prefs.GetString("api_key", null);
+            var client = new DigitalOceanClient(api_key);
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
             await UpdateInfo(id);
@@ -202,7 +204,9 @@ namespace Swell
 
         public async Task<IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet>> GetServerInfo()
         {
-            var client = new DigitalOceanClient(API_KEY.Sdjalsdlsdkfjls.ToString());
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            var api_key = prefs.GetString("api_key", null);
+            var client = new DigitalOceanClient(api_key);
             var droplets = await client.Droplets.GetAll();
             var dropdata = new Array[droplets.Count, 100];
             return droplets;
@@ -220,41 +224,45 @@ namespace Swell
             return true;
         }
 
-        public async Task Login()
+        public void Login()
         {
-            SetContentView(Resource.Layout.login);
             Button loginButton = FindViewById<Button>(Resource.Id.LoginButton);
             EditText Keyinput = FindViewById<EditText>(Resource.Id.editText1);
             loginButton.Click += async (o, e) =>
             {
-                var err = AuthUser(Keyinput.Text);
-                /*
-                switch (err)
+                try
                 {
-                    case (null):
-                        break;
-                    case (DigitalOcean.API.Exceptions.A):
-                        break;
-                    default:
-                        Toast.MakeText(this, "ERROR: " + err, ToastLength.Short).Show();
+                    await AuthUser(Keyinput.Text);
+
+                    Toast.MakeText(this, "Logging in...", ToastLength.Short).Show();
+                    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                    var prefedit = prefs.Edit();
+                    prefedit.PutString("api_key", Keyinput.Text);
+                    prefedit.Commit();
+                    StartUpdate(-1);
                 }
-                */
-                Toast.MakeText(this, "Logged In", ToastLength.Short).Show();
+                catch (Exception err)
+                {
+                    Toast.MakeText(this, err.ToString(), ToastLength.Long).Show();
+                }
             };
         }
 
-        public async Task<Exception> AuthUser(string api_key)
+        public async Task AuthUser(string key)
         {
-            var client = new DigitalOceanClient(api_key);
+            var client = new DigitalOceanClient(key);
             try
             {
                 var drops = await client.Droplets.GetAll();
-                return null;
+                return;
+            }
+            catch (DigitalOcean.API.Exceptions.ApiException err)
+            {
+                throw new Exception("Invalid API key");
             }
             catch (Exception err)
             {
-                Toast.MakeText(this, "ERROR: " + err, ToastLength.Short).Show();
-                return err;
+                throw new Exception("Unknown error");
             }
         }
 
