@@ -5081,6 +5081,9 @@ namespace Swell
 			// aapt resource value: 0x7f0900ae
 			public const int LoginButton = 2131296430;
 			
+			// aapt resource value: 0x7f0900e7
+			public const int Logout = 2131296487;
+			
 			// aapt resource value: 0x7f090035
 			public const int META = 2131296309;
 			
@@ -5140,9 +5143,6 @@ namespace Swell
 			
 			// aapt resource value: 0x7f09005c
 			public const int action_mode_close_button = 2131296348;
-			
-			// aapt resource value: 0x7f0900e7
-			public const int action_settings = 2131296487;
 			
 			// aapt resource value: 0x7f0900cd
 			public const int action_text = 2131296461;

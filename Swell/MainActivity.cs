@@ -16,7 +16,7 @@ using Android.Content;
 using Xamarin.Android;
 using Android.Preferences;
 
-namespace Swell
+namespace Swell.Main
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
@@ -26,14 +26,18 @@ namespace Swell
         {
             base.OnCreate(savedInstanceState);
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            var prefedits = prefs.Edit();
-            prefedits.PutString("api_key", null).Commit();
+            //var prefedits = prefs.Edit();
+            //prefedits.PutString("api_key", null).Commit();
             var api_key = prefs.GetString("api_key", null);
 
             if (api_key == null)
             {
                 SetContentView(Resource.Layout.login);
                 Login();
+            }
+            else
+            {
+                StartUpdate(-1);
             }
         }
 
@@ -290,11 +294,15 @@ namespace Swell
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
-            Toast.MakeText(this, item.TitleFormatted, ToastLength.Short).Show();
 
-
-            if (id == Resource.Id.action_settings)
+            if (id == Resource.Id.Logout)
             {
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                var prefedit = prefs.Edit();
+                prefedit.PutString("api_key", null);
+                prefedit.Commit();
+                SetContentView(Resource.Layout.login);
+                Login();
                 return true;
             }
 
