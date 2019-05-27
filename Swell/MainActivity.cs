@@ -92,55 +92,107 @@ namespace Swell.Main
             if (id < 0) { return; }
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 
+            Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
+            alert.SetTitle("Confirm Poweroff");
+            alert.SetMessage("Are you sure you want to force a shutdown?\nThis may cause data loss and corruption.\n Do you want to continue?");
+            alert.SetCancelable(false);
+
             var api_key = prefs.GetString("api_key", null);
             var client = new DigitalOceanClient(api_key);
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
+
             await UpdateInfo(id);
 
+            alert.SetNegativeButton("Cancel", (senderAlert, args) =>
+            {
+                switcher.Checked = true;
+                Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
+            });
+
             switcher.Click += async (o, e) =>
-             {
-                 switcher.Enabled = false;
-                 if (switcher.Checked)
-                 {
-                     var action = await client.DropletActions.PowerOn(droplets[id].Id);
-                     var actionget = await client.Actions.Get(action.Id);
-                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
-                     while (actionget.Status != "completed")
-                     {
-                         actionget = await client.Actions.Get(action.Id);
-                         statustext.Text = "Powering On";
-                         statustext.SetTextColor(Color.ParseColor("#FF8C00"));
-                     }
-                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
-                     await UpdateInfo(id);
-                     Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
-                 }
-                 else if (switcher.Checked == false)
-                 {
-                     var action = await client.DropletActions.PowerOff(droplets[id].Id);
-                     var actionget = await client.Actions.Get(action.Id);
-                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
-                     while (actionget.Status != "completed")
-                     {
-                         actionget = await client.Actions.Get(action.Id);
-                         statustext.Text = "Shutting down";
-                         statustext.SetTextColor(Color.ParseColor("#FF8C00"));
-                     }
-                     Toast.MakeText(this, action.Status, ToastLength.Short).Show();
-                     await UpdateInfo(id);
-                     Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
-                 }
-                 //switcher.Enabled = true;
-                 Handler h = new Handler();
-                 Action EnableSwitcher = () =>
-                 {
-                     switcher.Enabled = true;
-                 };
-                 h.PostDelayed(EnableSwitcher, 10000);
-             };
+            {
+                switcher.Enabled = false;
+                if (switcher.Checked)
+                {
+                    var action = await client.DropletActions.PowerOn(droplets[id].Id);
+                    var actionget = await client.Actions.Get(action.Id);
+                    Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                    while (actionget.Status != "completed")
+                    {
+                        actionget = await client.Actions.Get(action.Id);
+                        statustext.Text = "Powering On";
+                        statustext.SetTextColor(Color.ParseColor("#FF8C00"));
+                    }
+                    Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                    await UpdateInfo(id);
+                    Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+                }
+                else if (!switcher.Checked)
+                {
+                    alert.SetPositiveButton("OK", async (senderAlert, args) =>
+                    {
+                        var action = await client.DropletActions.PowerOff(droplets[id].Id);
+                        var actionget = await client.Actions.Get(action.Id);
+                        Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                        while (actionget.Status != "completed")
+                        {
+                            actionget = await client.Actions.Get(action.Id);
+                            statustext.Text = "Shutting down";
+                            statustext.SetTextColor(Color.ParseColor("#FF8C00"));
+                        }
+                        Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+                        await UpdateInfo(id);
+                        Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+                    });
+                    Dialog dialog = alert.Create();
+                    dialog.Show();
+                }
+ 
+                //switcher.Enabled = true;
+                Handler h = new Handler();
+                Action EnableSwitcher = () =>
+                {
+                    switcher.Enabled = true;
+                };
+                h.PostDelayed(EnableSwitcher, 10000);
+            };
+        }
+/*
+        public async Task PowerOffServer(int power, int id, DigitalOceanClient client,TextView statustext)
+        {
+            var droplets = await client.Droplets.GetAll();
+            var action = await client.DropletActions.PowerOff(droplets[id].Id);
+            var actionget = await client.Actions.Get(action.Id);
+            Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+            while (actionget.Status != "completed")
+            {
+                actionget = await client.Actions.Get(action.Id);
+                statustext.Text = "Shutting down";
+                statustext.SetTextColor(Color.ParseColor("#FF8C00"));
+            }
+            await UpdateInfo(id);
+            Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+            return;
         }
 
+        public async Task PowerOnServer(int power, int id, DigitalOceanClient client, TextView statustext)
+        {
+            var droplets = await client.Droplets.GetAll();
+            var action = await client.DropletActions.PowerOff(droplets[id].Id);
+            var actionget = await client.Actions.Get(action.Id);
+            Toast.MakeText(this, action.Status, ToastLength.Short).Show();
+            while (actionget.Status != "completed")
+            {
+                actionget = await client.Actions.Get(action.Id);
+                statustext.Text = "Shutting down";
+                statustext.SetTextColor(Color.ParseColor("#FF8C00"));
+            }
+            await UpdateInfo(id);
+            Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
+            return;
+        }
+*/
         public async Task UpdateInfo(int id)
         {
             var droplets = await GetServerInfo();
