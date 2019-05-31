@@ -102,6 +102,7 @@ namespace Swell.Main
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
 
+
             await UpdateInfo(id);
 
             alert.SetNegativeButton("Cancel", (senderAlert, args) =>
