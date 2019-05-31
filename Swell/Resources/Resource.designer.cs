@@ -5084,11 +5084,14 @@ namespace Swell
 			// aapt resource value: 0x7f0900ae
 			public const int LoginButton = 2131296430;
 			
-			// aapt resource value: 0x7f0900e7
-			public const int Logout = 2131296487;
+			// aapt resource value: 0x7f0900e8
+			public const int Logout = 2131296488;
 			
 			// aapt resource value: 0x7f090035
 			public const int META = 2131296309;
+			
+			// aapt resource value: 0x7f0900e7
+			public const int Rename = 2131296487;
 			
 			// aapt resource value: 0x7f090036
 			public const int SHIFT = 2131296310;
@@ -5272,6 +5275,9 @@ namespace Swell
 			
 			// aapt resource value: 0x7f09007e
 			public const int edit_query = 2131296382;
+			
+			// aapt resource value: 0x7f0900ca
+			public const int email = 2131296458;
 			
 			// aapt resource value: 0x7f090030
 			public const int end = 2131296304;
@@ -5693,9 +5699,6 @@ namespace Swell
 			// aapt resource value: 0x7f090069
 			public const int textSpacerNoTitle = 2131296361;
 			
-			// aapt resource value: 0x7f0900ca
-			public const int textView = 2131296458;
-			
 			// aapt resource value: 0x7f0900aa
 			public const int text_input_password_toggle = 2131296426;
 			
@@ -6094,7 +6097,10 @@ namespace Swell
 			public const int activity_main_drawer = 2131689472;
 			
 			// aapt resource value: 0x7f0f0001
-			public const int menu_main = 2131689473;
+			public const int drop_options = 2131689473;
+			
+			// aapt resource value: 0x7f0f0002
+			public const int menu_main = 2131689474;
 			
 			static Menu()
 			{

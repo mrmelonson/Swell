@@ -62,6 +62,8 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DigitalOcean\DigitalOceanClient.cs" />
+    <Compile Include="DigitalOcean\API\Models\Responses\Account.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="API_KEY.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -148,6 +150,7 @@
   <ItemGroup>
     <Content Include="Key.txt" />
     <AndroidResource Include="Resources\drawable\Digital_Ocean.png" />
+    <AndroidResource Include="Resources\menu\drop_options.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\imgs\" />

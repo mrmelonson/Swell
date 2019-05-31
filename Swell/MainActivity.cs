@@ -98,7 +98,7 @@ namespace Swell.Main
             alert.SetCancelable(false);
 
             var api_key = prefs.GetString("api_key", null);
-            var client = new DigitalOceanClient(api_key);
+            DigitalOceanClient client = new DigitalOceanClient(api_key);
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
 
@@ -197,9 +197,17 @@ namespace Swell.Main
         public async Task UpdateInfo(int id)
         {
             var droplets = await GetServerInfo();
-
+            /*
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            var api_key = prefs.GetString("api_key", null);
+            DigitalOceanClient client = new DigitalOceanClient(api_key);
+            
+            //var acc = await client.Account.Get();
+            */
 
             FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
+
+            //FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
             FindViewById<TextView>(Resource.Id.ip_v4).Text = "IPv4: " + droplets[id].Networks.v4[0].IpAddress;
 
             FindViewById<TextView>(Resource.Id.ip_v6).Text = "IPv6: Not Enabled";
@@ -276,6 +284,10 @@ namespace Swell.Main
             //Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
+            
+
+            //drawer.SetOnLongClickListener(View.OnLongClickListener())
+            //item.
             StartUpdate(id);
 
             return true;
@@ -346,6 +358,7 @@ namespace Swell.Main
         {
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+
 
 
             if (id == Resource.Id.Logout)
