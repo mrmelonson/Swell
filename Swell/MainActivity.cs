@@ -70,10 +70,13 @@ namespace Swell.Main
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
 
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            fab.Click += FabOnClick;
+
             IMenu menu = navigationView.Menu;
             menu.Clear();
             ISubMenu submenu = menu.AddSubMenu("Servers");
-
+            
             var droplets = await GetServerInfo();
             
             var ServerCount = droplets.Count;
@@ -81,26 +84,62 @@ namespace Swell.Main
             {
                 submenu.Add(i, i, i, droplets[i].Name);
             }
+
             await CreateScreen(id, droplets);
             
         }
-
 
         public async Task CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
         {
             //here is my new function
             if (id < 0) { return; }
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            var api_key = prefs.GetString("api_key", null);
+
+            DigitalOceanClient client = new DigitalOceanClient(api_key);
+            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
+            TextView statustext = FindViewById<TextView>(Resource.Id.status);
 
             Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
+            Android.Support.V7.App.AlertDialog.Builder rename = new Android.Support.V7.App.AlertDialog.Builder(this);
+
             alert.SetTitle("Confirm Poweroff");
             alert.SetMessage("Are you sure you want to force a shutdown?\nThis may cause data loss and corruption.\n Do you want to continue?");
             alert.SetCancelable(false);
 
-            var api_key = prefs.GetString("api_key", null);
-            DigitalOceanClient client = new DigitalOceanClient(api_key);
-            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
-            TextView statustext = FindViewById<TextView>(Resource.Id.status);
+            rename.SetTitle("Rename to?");
+
+            rename.SetNegativeButton("Cancel", (senderAlert, args) =>
+             {
+                 Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
+             });
+
+            rename.SetCancelable(false);
+            TextView name = FindViewById<TextView>(Resource.Id.name);
+            name.Click += (o, e) =>
+            {
+                EditText input = new EditText(this);
+                rename.SetView(input);
+                Dialog renamedialog = rename.Create();
+                rename.SetPositiveButton("OK", async (senderAlert, args) =>
+                {
+                    try
+                    {
+                        var renameAction = await client.DropletActions.Rename(droplets[id].Id, input.Text);
+                        var renameActionGet = await client.Actions.Get(renameAction.Id);
+                        while (renameActionGet.Status != "completed")
+                        {
+                            renameActionGet = await client.Actions.Get(renameActionGet.Id);
+                        }
+                    }
+                    catch
+                    {
+                        Toast.MakeText(this, "Error: Only characters a-z, 0-9, . and ()", ToastLength.Short).Show();
+                    }
+                    await UpdateInfo(id);
+                });
+                rename.Show();
+            };
 
 
             await UpdateInfo(id);
@@ -277,22 +316,6 @@ namespace Swell.Main
             return droplets;
         }
 
-        public bool OnNavigationItemSelected(IMenuItem item) //Actions for the main menu items
-        {
-            int id = item.ItemId;
-            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-            //Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
-            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            drawer.CloseDrawer(GravityCompat.Start);
-            
-
-            //drawer.SetOnLongClickListener(View.OnLongClickListener())
-            //item.
-            StartUpdate(id);
-
-            return true;
-        }
-
         public void Login()
         {
             Button loginButton = FindViewById<Button>(Resource.Id.LoginButton);
@@ -335,6 +358,22 @@ namespace Swell.Main
             }
         }
 
+        //For navigation drawer actions
+        public bool OnNavigationItemSelected(IMenuItem item)
+        {
+            int id = item.ItemId;
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            //Toast.MakeText(this, droplets[id].Name, ToastLength.Short).Show();
+            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            drawer.CloseDrawer(GravityCompat.Start);
+
+
+            StartUpdate(id);
+
+            return true;
+        }
+
+        //For pressing back button on phone
         public override void OnBackPressed()
         {
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
@@ -348,18 +387,18 @@ namespace Swell.Main
             }
         }
 
+        //Creates menu for ellipsis
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
             return true;
         }
 
-        public override bool OnOptionsItemSelected(IMenuItem item) // Actions for the settings menu (top right corner of screen)
+        //Actions for the menu dropdowns
+        public override bool OnOptionsItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-
-
 
             if (id == Resource.Id.Logout)
             {
@@ -373,6 +412,15 @@ namespace Swell.Main
             }
 
             return base.OnOptionsItemSelected(item);
+        }
+
+        //Action for floating settings button
+        private void FabOnClick(object sender, EventArgs eventArgs)
+        {
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            PopupMenu popup = new PopupMenu(this, fab);
+            popup.MenuInflater.Inflate(Resource.Menu.drop_options, popup.Menu);
+            popup.Show();
         }
     }
 }

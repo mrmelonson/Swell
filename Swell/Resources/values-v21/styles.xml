@@ -5,4 +5,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+  <style name="TextAppearance">
+    <item name="android:ellipsize">end</item>
+  </style>
 </resources>
