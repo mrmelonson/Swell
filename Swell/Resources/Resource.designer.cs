@@ -3879,6 +3879,9 @@ namespace Swell
 			// aapt resource value: 0x7f08007e
 			public const int design_fab_border_width = 2131230846;
 			
+			// aapt resource value: 0x7f0800a9
+			public const int design_fab_content_size = 2131230889;
+			
 			// aapt resource value: 0x7f08007f
 			public const int design_fab_elevation = 2131230847;
 			
@@ -4360,26 +4363,26 @@ namespace Swell
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020137
-			public const int avd_hide_password_1 = 2130837815;
-			
-			// aapt resource value: 0x7f020138
-			public const int avd_hide_password_2 = 2130837816;
-			
 			// aapt resource value: 0x7f020139
-			public const int avd_hide_password_3 = 2130837817;
+			public const int avd_hide_password_1 = 2130837817;
+			
+			// aapt resource value: 0x7f02013a
+			public const int avd_hide_password_2 = 2130837818;
+			
+			// aapt resource value: 0x7f02013b
+			public const int avd_hide_password_3 = 2130837819;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f02013a
-			public const int avd_show_password_1 = 2130837818;
-			
-			// aapt resource value: 0x7f02013b
-			public const int avd_show_password_2 = 2130837819;
-			
 			// aapt resource value: 0x7f02013c
-			public const int avd_show_password_3 = 2130837820;
+			public const int avd_show_password_1 = 2130837820;
+			
+			// aapt resource value: 0x7f02013d
+			public const int avd_show_password_2 = 2130837821;
+			
+			// aapt resource value: 0x7f02013e
+			public const int avd_show_password_3 = 2130837822;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;
@@ -5038,11 +5041,11 @@ namespace Swell
 			// aapt resource value: 0x7f02012f
 			public const int notification_icon_background = 2130837807;
 			
-			// aapt resource value: 0x7f020135
-			public const int notification_template_icon_bg = 2130837813;
+			// aapt resource value: 0x7f020137
+			public const int notification_template_icon_bg = 2130837815;
 			
-			// aapt resource value: 0x7f020136
-			public const int notification_template_icon_low_bg = 2130837814;
+			// aapt resource value: 0x7f020138
+			public const int notification_template_icon_low_bg = 2130837816;
 			
 			// aapt resource value: 0x7f020130
 			public const int notification_tile_bg = 2130837808;
@@ -5051,13 +5054,19 @@ namespace Swell
 			public const int notify_panel_notification_icon_bg = 2130837809;
 			
 			// aapt resource value: 0x7f020132
-			public const int side_nav_bar = 2130837810;
+			public const int settings_icon = 2130837810;
 			
 			// aapt resource value: 0x7f020133
-			public const int tooltip_frame_dark = 2130837811;
+			public const int settings_icon1 = 2130837811;
 			
 			// aapt resource value: 0x7f020134
-			public const int tooltip_frame_light = 2130837812;
+			public const int side_nav_bar = 2130837812;
+			
+			// aapt resource value: 0x7f020135
+			public const int tooltip_frame_dark = 2130837813;
+			
+			// aapt resource value: 0x7f020136
+			public const int tooltip_frame_light = 2130837814;
 			
 			static Drawable()
 			{
@@ -5081,11 +5090,14 @@ namespace Swell
 			// aapt resource value: 0x7f090034
 			public const int FUNCTION = 2131296308;
 			
+			// aapt resource value: 0x7f0900e9
+			public const int Ipvsix = 2131296489;
+			
 			// aapt resource value: 0x7f0900af
 			public const int LoginButton = 2131296431;
 			
-			// aapt resource value: 0x7f0900e9
-			public const int Logout = 2131296489;
+			// aapt resource value: 0x7f0900ea
+			public const int Logout = 2131296490;
 			
 			// aapt resource value: 0x7f090035
 			public const int META = 2131296309;

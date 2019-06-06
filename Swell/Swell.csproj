@@ -149,6 +149,8 @@
     <Content Include="Key.txt" />
     <AndroidResource Include="Resources\drawable\Digital_Ocean.png" />
     <AndroidResource Include="Resources\menu\drop_options.xml" />
+    <AndroidResource Include="Resources\drawable\settings_icon.png" />
+    <AndroidResource Include="Resources\drawable\settings_icon1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\imgs\" />

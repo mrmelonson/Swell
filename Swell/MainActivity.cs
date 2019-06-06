@@ -22,6 +22,7 @@ namespace Swell.Main
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         private CancellationTokenSource cts;
+        public int currentDropId;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -85,14 +86,20 @@ namespace Swell.Main
                 submenu.Add(i, i, i, droplets[i].Name);
             }
 
-            await CreateScreen(id, droplets);
+            await CreateScreen(id);
             
         }
 
-        public async Task CreateScreen(int id, IReadOnlyList<DigitalOcean.API.Models.Responses.Droplet> droplets)
+        /*
+         * BELOW ARE GENERAL FUNCTIONS 
+         * 
+         */
+
+        public async Task CreateScreen(int id)
         {
-            //here is my new function
             if (id < 0) { return; }
+            var droplets = await GetServerInfo();
+            currentDropId = id;
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
 
@@ -101,45 +108,11 @@ namespace Swell.Main
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
 
             Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
-            Android.Support.V7.App.AlertDialog.Builder rename = new Android.Support.V7.App.AlertDialog.Builder(this);
 
             alert.SetTitle("Confirm Poweroff");
             alert.SetMessage("Are you sure you want to force a shutdown?\nThis may cause data loss and corruption.\n Do you want to continue?");
             alert.SetCancelable(false);
-
-            rename.SetTitle("Rename to?");
-
-            rename.SetNegativeButton("Cancel", (senderAlert, args) =>
-             {
-                 Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
-             });
-
-            rename.SetCancelable(false);
             TextView name = FindViewById<TextView>(Resource.Id.name);
-            name.Click += (o, e) =>
-            {
-                EditText input = new EditText(this);
-                rename.SetView(input);
-                Dialog renamedialog = rename.Create();
-                rename.SetPositiveButton("OK", async (senderAlert, args) =>
-                {
-                    try
-                    {
-                        var renameAction = await client.DropletActions.Rename(droplets[id].Id, input.Text);
-                        var renameActionGet = await client.Actions.Get(renameAction.Id);
-                        while (renameActionGet.Status != "completed")
-                        {
-                            renameActionGet = await client.Actions.Get(renameActionGet.Id);
-                        }
-                    }
-                    catch
-                    {
-                        Toast.MakeText(this, "Error: Only characters a-z, 0-9, . and ()", ToastLength.Short).Show();
-                    }
-                    await UpdateInfo(id);
-                });
-                rename.Show();
-            };
 
 
             await UpdateInfo(id);
@@ -316,6 +289,83 @@ namespace Swell.Main
             return droplets;
         }
 
+        public async Task AuthUser(string key)
+        {
+            var client = new DigitalOceanClient(key);
+            try
+            {
+                var drops = await client.Droplets.GetAll();
+                return;
+            }
+            catch (DigitalOcean.API.Exceptions.ApiException err)
+            {
+                throw new Exception("Invalid API key");
+            }
+            catch (Exception err)
+            {
+                throw new Exception("Unknown error");
+            }
+        }
+
+        public async Task RenameServer(int id)
+        {
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            var api_key = prefs.GetString("api_key", null);
+            DigitalOceanClient client = new DigitalOceanClient(api_key);
+            EditText input = new EditText(this);
+
+            var droplets = await GetServerInfo();
+
+            Android.Support.V7.App.AlertDialog.Builder rename = new Android.Support.V7.App.AlertDialog.Builder(this);
+
+            rename.SetTitle("Rename to?");
+            rename.SetCancelable(false);
+            rename.SetView(input);
+
+            rename.SetNegativeButton("Cancel", (senderAlert, args) =>
+            {
+                Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
+            });
+
+            rename.SetPositiveButton("OK", async (senderAlert, args) =>
+            {
+                try
+                {
+                    var renameAction = await client.DropletActions.Rename(droplets[id].Id, input.Text);
+                    var renameActionGet = await client.Actions.Get(renameAction.Id);
+                    while (renameActionGet.Status != "completed")
+                    {
+                        renameActionGet = await client.Actions.Get(renameActionGet.Id);
+                    }
+                }
+                catch
+                {
+                    Toast.MakeText(this, "Error: Only characters a-z, 0-9, . and ()", ToastLength.Short).Show();
+                }
+                await UpdateInfo(id);
+            });
+
+            rename.Show();
+        }
+
+        public async Task EnableNetworking(int id, string type) 
+        {
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            var api_key = prefs.GetString("api_key", null);
+            DigitalOceanClient client = new DigitalOceanClient(api_key);
+
+            var droplets = await GetServerInfo();
+            
+            
+        }
+
+        /*
+         * BELOW ARE ALL UI FUNCTIONS 
+         * 
+         */
+
+
+        //Login Screen
         public void Login()
         {
             Button loginButton = FindViewById<Button>(Resource.Id.LoginButton);
@@ -338,24 +388,6 @@ namespace Swell.Main
                     Toast.MakeText(this, err.ToString(), ToastLength.Long).Show();
                 }
             };
-        }
-
-        public async Task AuthUser(string key)
-        {
-            var client = new DigitalOceanClient(key);
-            try
-            {
-                var drops = await client.Droplets.GetAll();
-                return;
-            }
-            catch (DigitalOcean.API.Exceptions.ApiException err)
-            {
-                throw new Exception("Invalid API key");
-            }
-            catch (Exception err)
-            {
-                throw new Exception("Unknown error");
-            }
         }
 
         //For navigation drawer actions
@@ -421,7 +453,21 @@ namespace Swell.Main
             PopupMenu popup = new PopupMenu(this, fab);
             popup.MenuInflater.Inflate(Resource.Menu.drop_options, popup.Menu);
             popup.Show();
+            popup.MenuItemClick += async (o,e) => {
+                var itemid = e.Item.ItemId;
+
+                if (itemid == Resource.Id.Rename)
+                {
+                    await RenameServer(currentDropId);
+                }
+
+                if (itemid == Resource.Id.Ipvsix)
+                {
+                    await RenameServer(currentDropId);
+                }
+            };
         }
+
     }
 }
 
