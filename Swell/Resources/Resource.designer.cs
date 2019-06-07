@@ -5091,7 +5091,7 @@ namespace Swell
 			public const int FUNCTION = 2131296308;
 			
 			// aapt resource value: 0x7f0900e9
-			public const int Ipvsix = 2131296489;
+			public const int Ipv6menu = 2131296489;
 			
 			// aapt resource value: 0x7f0900af
 			public const int LoginButton = 2131296431;

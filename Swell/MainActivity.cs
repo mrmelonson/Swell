@@ -68,25 +68,10 @@ namespace Swell.Main
             drawer.AddDrawerListener(toggle);
             toggle.SyncState();
 
-            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-            navigationView.SetNavigationItemSelectedListener(this);
-
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
-            IMenu menu = navigationView.Menu;
-            menu.Clear();
-            ISubMenu submenu = menu.AddSubMenu("Servers");
-            
-            var droplets = await GetServerInfo();
-            
-            var ServerCount = droplets.Count;
-            for (int i = 0; i < droplets.Count; i++)
-            {
-                submenu.Add(i, i, i, droplets[i].Name);
-            }
-
-            await CreateScreen(id);
+            await UpdateNavMenu();
             
         }
 
@@ -94,7 +79,7 @@ namespace Swell.Main
          * BELOW ARE GENERAL FUNCTIONS 
          * 
          */
-
+        
         public async Task CreateScreen(int id)
         {
             if (id < 0) { return; }
@@ -171,44 +156,13 @@ namespace Swell.Main
                 h.PostDelayed(EnableSwitcher, 10000);
             };
         }
-/*
-        public async Task PowerOffServer(int power, int id, DigitalOceanClient client,TextView statustext)
-        {
-            var droplets = await client.Droplets.GetAll();
-            var action = await client.DropletActions.PowerOff(droplets[id].Id);
-            var actionget = await client.Actions.Get(action.Id);
-            Toast.MakeText(this, action.Status, ToastLength.Short).Show();
-            while (actionget.Status != "completed")
-            {
-                actionget = await client.Actions.Get(action.Id);
-                statustext.Text = "Shutting down";
-                statustext.SetTextColor(Color.ParseColor("#FF8C00"));
-            }
-            await UpdateInfo(id);
-            Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
-            return;
-        }
 
-        public async Task PowerOnServer(int power, int id, DigitalOceanClient client, TextView statustext)
-        {
-            var droplets = await client.Droplets.GetAll();
-            var action = await client.DropletActions.PowerOff(droplets[id].Id);
-            var actionget = await client.Actions.Get(action.Id);
-            Toast.MakeText(this, action.Status, ToastLength.Short).Show();
-            while (actionget.Status != "completed")
-            {
-                actionget = await client.Actions.Get(action.Id);
-                statustext.Text = "Shutting down";
-                statustext.SetTextColor(Color.ParseColor("#FF8C00"));
-            }
-            await UpdateInfo(id);
-            Toast.MakeText(this, "Info updated", ToastLength.Short).Show();
-            return;
-        }
-*/
         public async Task UpdateInfo(int id)
         {
             var droplets = await GetServerInfo();
+
+            await UpdateNavMenu();
+
             /*
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
@@ -355,15 +309,47 @@ namespace Swell.Main
             DigitalOceanClient client = new DigitalOceanClient(api_key);
 
             var droplets = await GetServerInfo();
-            
-            
+
+            Android.Support.V7.App.AlertDialog.Builder turnoff = new Android.Support.V7.App.AlertDialog.Builder(this);
+
+            turnoff.SetTitle("Warning");
+            turnoff.SetCancelable(false);
+            turnoff.SetMessage("You must power off your droplet before enabling " + type + " networking.");
+            turnoff.SetPositiveButton("OK", (senderAlert, args) =>{ });
+            if (droplets[id].Status != "off")
+            {
+                turnoff.Show();
+                return;
+            }
+
+            return;
         }
 
         /*
          * BELOW ARE ALL UI FUNCTIONS 
          * 
          */
+        
+        //Updates Navigation drawer
+        public async Task UpdateNavMenu()
+        {
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            navigationView.SetNavigationItemSelectedListener(this);
 
+            IMenu menu = navigationView.Menu;
+            menu.Clear();
+            ISubMenu submenu = menu.AddSubMenu("Servers");
+
+            var droplets = await GetServerInfo();
+
+            var ServerCount = droplets.Count;
+            for (int i = 0; i < droplets.Count; i++)
+            {
+                submenu.Add(i, i, i, droplets[i].Name);
+            }
+
+            return;
+        }
 
         //Login Screen
         public void Login()
@@ -400,7 +386,7 @@ namespace Swell.Main
             drawer.CloseDrawer(GravityCompat.Start);
 
 
-            StartUpdate(id);
+            CreateScreen(id);
 
             return true;
         }
@@ -461,9 +447,9 @@ namespace Swell.Main
                     await RenameServer(currentDropId);
                 }
 
-                if (itemid == Resource.Id.Ipvsix)
+                if (itemid == Resource.Id.Ipv6menu)
                 {
-                    await RenameServer(currentDropId);
+                    await EnableNetworking(currentDropId, "ipv6");
                 }
             };
         }
