@@ -5096,11 +5096,14 @@ namespace Swell
 			// aapt resource value: 0x7f0900af
 			public const int LoginButton = 2131296431;
 			
-			// aapt resource value: 0x7f0900ea
-			public const int Logout = 2131296490;
+			// aapt resource value: 0x7f0900eb
+			public const int Logout = 2131296491;
 			
 			// aapt resource value: 0x7f090035
 			public const int META = 2131296309;
+			
+			// aapt resource value: 0x7f0900ea
+			public const int PrivNetmenu = 2131296490;
 			
 			// aapt resource value: 0x7f0900e8
 			public const int Rename = 2131296488;
