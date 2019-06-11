@@ -71,6 +71,7 @@ namespace Swell.Main
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
+
             await UpdateNavMenu();
             
         }
@@ -85,6 +86,9 @@ namespace Swell.Main
             if (id < 0) { return; }
             var droplets = await GetServerInfo();
             currentDropId = id;
+
+            await UpdateInfo(id);
+
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
 
@@ -98,9 +102,6 @@ namespace Swell.Main
             alert.SetMessage("Are you sure you want to force a shutdown?\nThis may cause data loss and corruption.\n Do you want to continue?");
             alert.SetCancelable(false);
             TextView name = FindViewById<TextView>(Resource.Id.name);
-
-
-            await UpdateInfo(id);
 
             alert.SetNegativeButton("Cancel", (senderAlert, args) =>
             {
@@ -163,15 +164,8 @@ namespace Swell.Main
 
             await UpdateNavMenu();
 
-            /*
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            var api_key = prefs.GetString("api_key", null);
-            DigitalOceanClient client = new DigitalOceanClient(api_key);
-            
-            //var acc = await client.Account.Get();
-            */
-
-            FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
+            //FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
+            FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar).Title = droplets[id].Name;
 
             //FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
             FindViewById<TextView>(Resource.Id.ip_v4).Text = "IPv4: " + droplets[id].Networks.v4[0].IpAddress;

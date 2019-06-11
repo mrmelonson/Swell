@@ -5,18 +5,12 @@
     android:layout_height="match_parent"
 	android:layout_marginTop="60dp">
 	<TextView
-		android:text="Name"
+		android:text="IPv4"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:minWidth="25px"
 		android:minHeight="25px"
-		android:id="@+id/name" />
-	<TextView
-		android:text="IPv4"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
 		android:id="@+id/ip_v4"/>
 	<TextView
 		android:text="Networking"
