@@ -6142,6 +6142,9 @@ namespace Swell
 			// aapt resource value: 0x7f030003
 			public const int ic_launcher_round = 2130903043;
 			
+			// aapt resource value: 0x7f030004
+			public const int Settings_icon2 = 2130903044;
+			
 			static Mipmap()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
