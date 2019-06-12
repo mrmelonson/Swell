@@ -321,11 +321,20 @@ namespace Swell.Main
 
             foreach (var feature in droplets[id].Features)
             {
-                if (feature == type)
+                if (feature == "ipv6")
                 {
-                    Enable.SetMessage(type + " networking already enabled");
+                    Enable.SetMessage("ipv6 networking already enabled");
                     Enable.SetNeutralButton("OK", (senderAlert, args) => { });
                     Enable.Show();
+                    return;
+                }
+
+                if (feature == "private_network")
+                {
+                    Enable.SetMessage(" networking already enabled");
+                    Enable.SetNeutralButton("OK", (senderAlert, args) => { });
+                    Enable.Show();
+                    return;
                 }
             }
             Enable.SetMessage("Are you sure?");
@@ -370,6 +379,19 @@ namespace Swell.Main
             Enable.Show();
 
             return;
+        }
+
+        public async Task DeleteDrop(int id)
+        {
+            var droplets = await GetServerInfo();
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            var api_key = prefs.GetString("api_key", null);
+            DigitalOceanClient client = new DigitalOceanClient(api_key);
+
+            Android.Support.V7.App.AlertDialog.Builder deletepopup = new Android.Support.V7.App.AlertDialog.Builder(this);
+            deletepopup.SetTitle("Warning");
+            deletepopup.SetCancelable(false);
+
         }
 
         /*
@@ -489,19 +511,18 @@ namespace Swell.Main
             popup.MenuItemClick += async (o,e) => {
                 var itemid = e.Item.ItemId;
 
-                if (itemid == Resource.Id.Rename)
-                {
-                    await RenameServer(currentDropId);
-                }
-
-                if (itemid == Resource.Id.Ipv6menu)
-                {
-                    await EnableNetworking(currentDropId, "ipv6");
-                }
-
-                if (itemid == Resource.Id.PrivNetmenu)
-                {
-                    await EnableNetworking(currentDropId, "private_networking");
+                switch (itemid) {
+                    case Resource.Id.Rename:
+                        await RenameServer(currentDropId);
+                        break;
+                    case Resource.Id.Ipv6menu:
+                        await EnableNetworking(currentDropId, "ipv6");
+                        break;
+                    case Resource.Id.PrivNetmenu:
+                        await EnableNetworking(currentDropId, "private_networking");
+                        break;
+                    default:
+                        return;
                 }
             };
         }
