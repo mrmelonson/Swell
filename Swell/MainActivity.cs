@@ -302,19 +302,72 @@ namespace Swell.Main
             var api_key = prefs.GetString("api_key", null);
             DigitalOceanClient client = new DigitalOceanClient(api_key);
 
+            DigitalOcean.API.Models.Responses.Action EnableAction;
+
             var droplets = await GetServerInfo();
 
-            Android.Support.V7.App.AlertDialog.Builder turnoff = new Android.Support.V7.App.AlertDialog.Builder(this);
+            Android.Support.V7.App.AlertDialog.Builder Enable = new Android.Support.V7.App.AlertDialog.Builder(this);
 
-            turnoff.SetTitle("Warning");
-            turnoff.SetCancelable(false);
-            turnoff.SetMessage("You must power off your droplet before enabling " + type + " networking.");
-            turnoff.SetPositiveButton("OK", (senderAlert, args) =>{ });
+            Enable.SetTitle("Warning");
+            Enable.SetCancelable(false);
+
             if (droplets[id].Status != "off")
             {
-                turnoff.Show();
+                Enable.SetMessage("You must power off your droplet before enabling " + type + " networking.");
+                Enable.SetNeutralButton("OK", (senderAlert, args) => { });
+                Enable.Show();
                 return;
             }
+
+            foreach (var feature in droplets[id].Features)
+            {
+                if (feature == type)
+                {
+                    Enable.SetMessage(type + " networking already enabled");
+                    Enable.SetNeutralButton("OK", (senderAlert, args) => { });
+                    Enable.Show();
+                }
+            }
+            Enable.SetMessage("Are you sure?");
+            Enable.SetNegativeButton("Cancel", (senderAlert, args) => 
+            {
+                Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
+            });
+            Enable.SetPositiveButton("OK", async (senderAlert, args) => 
+            {
+                if (type == "ipv6")
+                {
+                    try
+                    {
+                        EnableAction = await client.DropletActions.EnableIpv6(droplets[id].Id);
+                        while (EnableAction.Status != "completed")
+                        {
+                            EnableAction = await client.Actions.Get(EnableAction.Id);
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        Toast.MakeText(this, err.ToString(), ToastLength.Short).Show();
+                    }
+                }
+                else if (type == "private_networking")
+                {
+                    try
+                    {
+                        EnableAction = await client.DropletActions.EnablePrivateNetworking(droplets[id].Id);
+                        while (EnableAction.Status != "completed")
+                        {
+                            EnableAction = await client.Actions.Get(EnableAction.Id);
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        Toast.MakeText(this, err.ToString(), ToastLength.Short).Show();
+                    }
+                }
+                await UpdateInfo(id);
+            });
+            Enable.Show();
 
             return;
         }
@@ -444,6 +497,11 @@ namespace Swell.Main
                 if (itemid == Resource.Id.Ipv6menu)
                 {
                     await EnableNetworking(currentDropId, "ipv6");
+                }
+
+                if (itemid == Resource.Id.PrivNetmenu)
+                {
+                    await EnableNetworking(currentDropId, "private_networking");
                 }
             };
         }
