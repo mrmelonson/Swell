@@ -392,6 +392,26 @@ namespace Swell.Main
             deletepopup.SetTitle("Warning");
             deletepopup.SetCancelable(false);
 
+            deletepopup.SetMessage("This cannot be undone\nAre you sure?");
+            deletepopup.SetNegativeButton("Cancel", (senderAlert, args) =>
+            {
+                Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
+            });
+
+            deletepopup.SetPositiveButton("OK", async (senderAlert, args) =>
+            {
+                try
+                {
+                    await client.Droplets.Delete(droplets[id].Id);
+                }
+                catch(Exception err)
+                {
+                    Toast.MakeText(this, err.ToString(), ToastLength.Long).Show();
+                }
+                StartUpdate(-1);
+
+            });
+            deletepopup.Show();
         }
 
         /*
@@ -520,6 +540,9 @@ namespace Swell.Main
                         break;
                     case Resource.Id.PrivNetmenu:
                         await EnableNetworking(currentDropId, "private_networking");
+                        break;
+                    case Resource.Id.DeleteDropmenu:
+                        await DeleteDrop(currentDropId);
                         break;
                     default:
                         return;

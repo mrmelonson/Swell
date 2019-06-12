@@ -16,5 +16,10 @@
         android:orderInCategory="3"
         android:title="Enable Priv Networking"
         app:showAsAction="never" />
+  <item
+        android:id="@+id/DeleteDropmenu"
+        android:orderInCategory="4"
+        android:title="Delete Droplet"
+        app:showAsAction="never" />
       
 </menu>

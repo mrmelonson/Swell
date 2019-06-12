@@ -2378,6 +2378,9 @@ namespace Swell
 			// aapt resource value: 0x7f080033
 			public const int CTRL = 2131230771;
 			
+			// aapt resource value: 0x7f0800c6
+			public const int DeleteDropmenu = 2131230918;
+			
 			// aapt resource value: 0x7f080034
 			public const int FUNCTION = 2131230772;
 			
@@ -2387,8 +2390,8 @@ namespace Swell
 			// aapt resource value: 0x7f0800aa
 			public const int LoginButton = 2131230890;
 			
-			// aapt resource value: 0x7f0800c6
-			public const int Logout = 2131230918;
+			// aapt resource value: 0x7f0800c7
+			public const int Logout = 2131230919;
 			
 			// aapt resource value: 0x7f080035
 			public const int META = 2131230773;
