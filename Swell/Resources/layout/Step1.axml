@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<Space
+		android:layout_width="match_parent"
+		android:layout_height="30dp"/>
+	<TextView
+		android:text="Step 1 - Name"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:gravity="center"/>
+	<Space
+		android:layout_width="match_parent"
+		android:layout_height="30dp"/>
+	<EditText
+		android:layout_width="250dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:id="@+id/Dropname" />
+	<Space
+		android:layout_width="match_parent"
+		android:layout_height="30dp"/>
+	<TextView
+		android:text="Step 2 - Distro"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:gravity="center"/>
+	<Space
+		android:layout_width="match_parent"
+		android:layout_height="30dp"/>
+	<RadioGroup
+		android:id="@+id/radiogroupdistro"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"/>
+	<Button
+		android:text="Next"
+		android:layout_width="100dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:id="@+id/NextS1" />
+
+
+</LinearLayout>

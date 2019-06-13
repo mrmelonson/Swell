@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Step1Activity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -153,6 +154,9 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\Settings_icon2.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Settings_icon2.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\Settings_icon2.png" />
+    <AndroidResource Include="Resources\layout\Step1.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\imgs\" />

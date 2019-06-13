@@ -29,7 +29,7 @@
     <Button
         android:text="Login"
         android:gravity="center"
-        android:layout_width="99dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/LoginButton" />
 </LinearLayout>

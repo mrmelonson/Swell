@@ -15,6 +15,7 @@ using Android.Graphics;
 using Android.Content;
 using Xamarin.Android;
 using Android.Preferences;
+using Android.Content;
 
 namespace Swell.Main
 {
@@ -26,6 +27,9 @@ namespace Swell.Main
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            
+
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             //var prefedits = prefs.Edit();
             //prefedits.PutString("api_key", null).Commit();
@@ -38,7 +42,9 @@ namespace Swell.Main
             }
             else
             {
-                StartUpdate(-1);
+                var intent = new Intent(this, typeof(Step1Activity));
+                StartActivity(intent);
+                //StartUpdate(-1);
             }
         }
 
@@ -161,7 +167,6 @@ namespace Swell.Main
         public async Task UpdateInfo(int id)
         {
             var droplets = await GetServerInfo();
-
             await UpdateNavMenu();
 
             //FindViewById<TextView>(Resource.Id.name).Text = droplets[id].Name;
