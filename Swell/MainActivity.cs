@@ -15,7 +15,6 @@ using Android.Graphics;
 using Android.Content;
 using Xamarin.Android;
 using Android.Preferences;
-using Android.Content;
 
 namespace Swell.Main
 {
@@ -42,7 +41,7 @@ namespace Swell.Main
             }
             else
             {
-                var intent = new Intent(this, typeof(Step1Activity));
+                var intent = new Intent(this, typeof(Step2Activity));
                 StartActivity(intent);
                 //StartUpdate(-1);
             }

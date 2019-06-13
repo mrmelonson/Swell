@@ -2375,8 +2375,14 @@ namespace Swell
 			// aapt resource value: 0x7f080032
 			public const int ALT = 2131230770;
 			
+			// aapt resource value: 0x7f0800c6
+			public const int BackS2 = 2131230918;
+			
 			// aapt resource value: 0x7f080033
 			public const int CTRL = 2131230771;
+			
+			// aapt resource value: 0x7f0800ce
+			public const int DeleteDropmenu = 2131230926;
 			
 			// aapt resource value: 0x7f0800c0
 			public const int Dropname = 2131230912;
@@ -2384,14 +2390,14 @@ namespace Swell
 			// aapt resource value: 0x7f080034
 			public const int FUNCTION = 2131230772;
 			
-			// aapt resource value: 0x7f0800c7
-			public const int Ipv6menu = 2131230919;
+			// aapt resource value: 0x7f0800cc
+			public const int Ipv6menu = 2131230924;
 			
 			// aapt resource value: 0x7f0800aa
 			public const int LoginButton = 2131230890;
 			
-			// aapt resource value: 0x7f0800c9
-			public const int Logout = 2131230921;
+			// aapt resource value: 0x7f0800cf
+			public const int Logout = 2131230927;
 			
 			// aapt resource value: 0x7f080035
 			public const int META = 2131230773;
@@ -2399,11 +2405,14 @@ namespace Swell
 			// aapt resource value: 0x7f0800c2
 			public const int NextS1 = 2131230914;
 			
-			// aapt resource value: 0x7f0800c8
-			public const int PrivNetmenu = 2131230920;
+			// aapt resource value: 0x7f0800c7
+			public const int NextS2 = 2131230919;
 			
-			// aapt resource value: 0x7f0800c6
-			public const int Rename = 2131230918;
+			// aapt resource value: 0x7f0800cd
+			public const int PrivNetmenu = 2131230925;
+			
+			// aapt resource value: 0x7f0800cb
+			public const int Rename = 2131230923;
 			
 			// aapt resource value: 0x7f080036
 			public const int SHIFT = 2131230774;
@@ -2678,14 +2687,17 @@ namespace Swell
 			// aapt resource value: 0x7f080018
 			public const int line3 = 2131230744;
 			
+			// aapt resource value: 0x7f0800c5
+			public const int linearLayout1 = 2131230917;
+			
 			// aapt resource value: 0x7f08001d
 			public const int listMode = 2131230749;
 			
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800c5
-			public const int masked = 2131230917;
+			// aapt resource value: 0x7f0800ca
+			public const int masked = 2131230922;
 			
 			// aapt resource value: 0x7f0800b4
 			public const int media_actions = 2131230900;
@@ -2693,8 +2705,8 @@ namespace Swell
 			// aapt resource value: 0x7f080094
 			public const int memory = 2131230868;
 			
-			// aapt resource value: 0x7f0800c3
-			public const int message = 2131230915;
+			// aapt resource value: 0x7f0800c8
+			public const int message = 2131230920;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2758,6 +2770,12 @@ namespace Swell
 			
 			// aapt resource value: 0x7f0800c1
 			public const int radiogroupdistro = 2131230913;
+			
+			// aapt resource value: 0x7f0800c3
+			public const int radiogroupplan = 2131230915;
+			
+			// aapt resource value: 0x7f0800c4
+			public const int radiogroupregion = 2131230916;
 			
 			// aapt resource value: 0x7f080098
 			public const int region = 2131230872;
@@ -2969,8 +2987,8 @@ namespace Swell
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800c4
-			public const int visible = 2131230916;
+			// aapt resource value: 0x7f0800c9
+			public const int visible = 2131230921;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;
@@ -3227,10 +3245,13 @@ namespace Swell
 			public const int Step1 = 2130968639;
 			
 			// aapt resource value: 0x7f040040
-			public const int support_simple_spinner_dropdown_item = 2130968640;
+			public const int Step2 = 2130968640;
 			
 			// aapt resource value: 0x7f040041
-			public const int tooltip = 2130968641;
+			public const int support_simple_spinner_dropdown_item = 2130968641;
+			
+			// aapt resource value: 0x7f040042
+			public const int tooltip = 2130968642;
 			
 			static Layout()
 			{

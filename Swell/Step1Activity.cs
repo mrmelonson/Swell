@@ -23,7 +23,6 @@ namespace Swell
                                   { "fedora-30-x64", "Fedora 30 x64"},
                                   { "ubuntu-19-04-x64", "Ubuntu 19.04 x64"} };
 
-            int[] slugradioid = { };
 
             EditText editText = FindViewById<EditText>(Resource.Id.Dropname);
             RadioGroup rg = FindViewById<RadioGroup>(Resource.Id.radiogroupdistro);
@@ -36,7 +35,7 @@ namespace Swell
                 rg.AddView(rdbtn);
             }
 
-            RadioButton checkedrdbtn = FindViewById<RadioButton>(rg.CheckedRadioButtonId); ;
+            RadioButton checkedrdbtn = FindViewById<RadioButton>(rg.CheckedRadioButtonId);
 
             rg.CheckedChange += (o, e) =>
             {
