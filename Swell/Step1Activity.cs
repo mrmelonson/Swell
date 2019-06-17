@@ -32,7 +32,7 @@ namespace Swell.Main
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Step1);
 
-            var CreatedDroplet = new DigitalOcean.API.Models.Responses.Droplet();
+            var CreatedDroplet = new DigitalOcean.API.Models.Requests.Droplet();
 
             string[,] slugarr = { { "centos-7-x64", "CentOS 7 x64" },
                                   { "debian-9-x64", "Debian 9 x64" },
@@ -66,7 +66,7 @@ namespace Swell.Main
                 {
                     if (checkedrdbtn.Text == distroDrops[i].name)
                     {
-                        CreatedDroplet.Image.Slug = distroDrops[i].slug;
+                        CreatedDroplet.ImageIdOrSlug = distroDrops[i].slug;
                     }
                 }
             };
@@ -89,7 +89,7 @@ namespace Swell.Main
                 Toast.MakeText(this, "Helloworld", ToastLength.Short).Show();
                 var intent = new Intent(this, typeof(Step2Activity));
                 intent.PutExtra("dropletName", editText.Text);
-                intent.PutExtra("DropletDistro", CreatedDroplet.Image.Slug);
+                intent.PutExtra("DropletDistro", CreatedDroplet.ImageIdOrSlug.ToString());
                 StartActivity(intent);
             };
 

@@ -2378,11 +2378,14 @@ namespace Swell
 			// aapt resource value: 0x7f0800c6
 			public const int BackS2 = 2131230918;
 			
+			// aapt resource value: 0x7f0800cd
+			public const int BackS3 = 2131230925;
+			
 			// aapt resource value: 0x7f080033
 			public const int CTRL = 2131230771;
 			
-			// aapt resource value: 0x7f0800ce
-			public const int DeleteDropmenu = 2131230926;
+			// aapt resource value: 0x7f0800d5
+			public const int DeleteDropmenu = 2131230933;
 			
 			// aapt resource value: 0x7f0800c0
 			public const int Dropname = 2131230912;
@@ -2390,14 +2393,14 @@ namespace Swell
 			// aapt resource value: 0x7f080034
 			public const int FUNCTION = 2131230772;
 			
-			// aapt resource value: 0x7f0800cc
-			public const int Ipv6menu = 2131230924;
+			// aapt resource value: 0x7f0800d3
+			public const int Ipv6menu = 2131230931;
 			
 			// aapt resource value: 0x7f0800aa
 			public const int LoginButton = 2131230890;
 			
-			// aapt resource value: 0x7f0800cf
-			public const int Logout = 2131230927;
+			// aapt resource value: 0x7f0800d6
+			public const int Logout = 2131230934;
 			
 			// aapt resource value: 0x7f080035
 			public const int META = 2131230773;
@@ -2408,11 +2411,14 @@ namespace Swell
 			// aapt resource value: 0x7f0800c7
 			public const int NextS2 = 2131230919;
 			
-			// aapt resource value: 0x7f0800cd
-			public const int PrivNetmenu = 2131230925;
+			// aapt resource value: 0x7f0800ce
+			public const int NextS3 = 2131230926;
 			
-			// aapt resource value: 0x7f0800cb
-			public const int Rename = 2131230923;
+			// aapt resource value: 0x7f0800d4
+			public const int PrivNetmenu = 2131230932;
+			
+			// aapt resource value: 0x7f0800d2
+			public const int Rename = 2131230930;
 			
 			// aapt resource value: 0x7f080036
 			public const int SHIFT = 2131230774;
@@ -2521,6 +2527,18 @@ namespace Swell
 			
 			// aapt resource value: 0x7f080047
 			public const int center_vertical = 2131230791;
+			
+			// aapt resource value: 0x7f0800c8
+			public const int checkBoxbackup = 2131230920;
+			
+			// aapt resource value: 0x7f0800ca
+			public const int checkBoxipv6net = 2131230922;
+			
+			// aapt resource value: 0x7f0800cb
+			public const int checkBoxmonitor = 2131230923;
+			
+			// aapt resource value: 0x7f0800c9
+			public const int checkBoxprivnet = 2131230921;
 			
 			// aapt resource value: 0x7f080073
 			public const int checkbox = 2131230835;
@@ -2696,8 +2714,8 @@ namespace Swell
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800ca
-			public const int masked = 2131230922;
+			// aapt resource value: 0x7f0800d1
+			public const int masked = 2131230929;
 			
 			// aapt resource value: 0x7f0800b4
 			public const int media_actions = 2131230900;
@@ -2705,8 +2723,8 @@ namespace Swell
 			// aapt resource value: 0x7f080094
 			public const int memory = 2131230868;
 			
-			// aapt resource value: 0x7f0800c8
-			public const int message = 2131230920;
+			// aapt resource value: 0x7f0800cf
+			public const int message = 2131230927;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2891,6 +2909,9 @@ namespace Swell
 			// aapt resource value: 0x7f08002c
 			public const int src_over = 2131230764;
 			
+			// aapt resource value: 0x7f0800cc
+			public const int sshkeygroup = 2131230924;
+			
 			// aapt resource value: 0x7f08004b
 			public const int start = 2131230795;
 			
@@ -2987,8 +3008,8 @@ namespace Swell
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800c9
-			public const int visible = 2131230921;
+			// aapt resource value: 0x7f0800d0
+			public const int visible = 2131230928;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;
@@ -3248,10 +3269,13 @@ namespace Swell
 			public const int Step2 = 2130968640;
 			
 			// aapt resource value: 0x7f040041
-			public const int support_simple_spinner_dropdown_item = 2130968641;
+			public const int Step3 = 2130968641;
 			
 			// aapt resource value: 0x7f040042
-			public const int tooltip = 2130968642;
+			public const int support_simple_spinner_dropdown_item = 2130968642;
+			
+			// aapt resource value: 0x7f040043
+			public const int tooltip = 2130968643;
 			
 			static Layout()
 			{

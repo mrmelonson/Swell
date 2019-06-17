@@ -18,13 +18,12 @@ namespace Swell.Main
     [Activity(Label = "Step2Activity")]
     public class Step2Activity : Activity
     {
+        DigitalOcean.API.Models.Requests.Droplet createdrop = new DigitalOcean.API.Models.Requests.Droplet();
+
         public class DisplayedDrops
         {
             public int dropindex { get; set; }
             public int radioid { get; set; }
-        }
-        public class Slug
-        {
             public string slug { get; set; }
             public string name { get; set; }
         }
@@ -33,6 +32,9 @@ namespace Swell.Main
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Step2);
+
+            createdrop.Name = Intent.Extras.GetString("dropletName");
+            createdrop.ImageIdOrSlug = Intent.Extras.GetString("DropletDistro");
             StartUpdate();
 
         }
@@ -64,7 +66,7 @@ namespace Swell.Main
             
 
             var currentdrops = new List<DisplayedDrops>();
-            var regionsslug = new List<Slug>();
+            var regionsslug = new List<DisplayedDrops>();
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
 
@@ -85,11 +87,11 @@ namespace Swell.Main
                     {
                         RadioButton rdbtn = new RadioButton(this);
                         rdbtn.Text = sizesSlugsArr[x, 1];
-                        Console.WriteLine(sizesSlugsArr[x, 1]);
                         rdbtn.Id = View.GenerateViewId();
                         var toadd = new DisplayedDrops();
                         toadd.dropindex = i;
                         toadd.radioid = rdbtn.Id;
+                        toadd.slug = sizesSlugsArr[x, 0];
                         currentdrops.Add(toadd);
                         rgp.AddView(rdbtn);
                     }
@@ -101,20 +103,21 @@ namespace Swell.Main
             {
                 if (regions[i].Available == true)
                 {
-                    var x = new Slug();
+                    var x = new DisplayedDrops();
                     x.name = regions[i].Name;
                     x.slug = regions[i].Slug;
                     regionsslug.Add(x);
                 }
             }
 
-            regionsslug.Sort(new Comparison<Slug>((x, y) => string.Compare(x.name, y.name)));
+            regionsslug.Sort(new Comparison<DisplayedDrops>((x, y) => string.Compare(x.name, y.name)));
 
             for (int i = 0; i < regionsslug.Count; i++)
             {
                 RadioButton rdbtn = new RadioButton(this);
                 rdbtn.Text = regionsslug[i].name;
                 rdbtn.Id = View.GenerateViewId();
+                regionsslug[i].radioid = rdbtn.Id;
                 rgr.AddView(rdbtn);
             }
 
@@ -126,14 +129,39 @@ namespace Swell.Main
             rgp.CheckedChange += (o, e) =>
             {
                 checkedrgp = FindViewById<RadioButton>(rgp.CheckedRadioButtonId);
+                for (int i = 0; i < currentdrops.Count; i++)
+                {
+                    if(currentdrops[i].radioid == checkedrgp.Id)
+                    {
+                        createdrop.SizeSlug = currentdrops[i].slug;
+                        break;
+                    }
+                }
             };
 
             rgr.CheckedChange += (o, e) =>
             {
                 checkedrgr = FindViewById<RadioButton>(rgr.CheckedRadioButtonId);
+                for (int i = 0; i < regionsslug.Count; i++)
+                {
+                    if (regionsslug[i].radioid == checkedrgp.Id)
+                    {
+                        createdrop.SizeSlug = regionsslug[i].slug;
+                        break;
+                    }
+                }
             };
 
             Button next = FindViewById<Button>(Resource.Id.NextS2);
+            Button back = FindViewById<Button>(Resource.Id.BackS2);
+
+            back.Click += (o, e) => 
+            {
+                var intent = new Intent(this, typeof(Step1Activity));
+                intent.PutExtra("DropletName", createdrop.Name);
+                intent.PutExtra("DropletDistro", createdrop.ImageIdOrSlug.ToString());
+                StartActivity(intent);
+            };
 
             next.Click += (o, e) =>
             {
@@ -148,7 +176,12 @@ namespace Swell.Main
                     return;
                 }
 
-                Toast.MakeText(this, "Helloworld", ToastLength.Short).Show();
+                var intent = new Intent(this, typeof(Step3Activity));
+                intent.PutExtra("DropletName", createdrop.Name);
+                intent.PutExtra("DropletDistro", createdrop.ImageIdOrSlug.ToString());
+                intent.PutExtra("DropletRegion", createdrop.RegionSlug);
+                intent.PutExtra("DropletSize", createdrop.SizeSlug);
+                StartActivity(intent);
 
             };
 
