@@ -23,6 +23,11 @@ namespace Swell.Main
             public int dropindex { get; set; }
             public int radioid { get; set; }
         }
+        public class Slug
+        {
+            public string slug { get; set; }
+            public string name { get; set; }
+        }
         private CancellationTokenSource cts;
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -56,10 +61,10 @@ namespace Swell.Main
                                      { "s-2vcpu-4gb", "2 CPUs, 4gb Memory, 80gb Disk, 4TB Transfer -- 20$/month (0.022$/hour)"},
                                    };
 
-
+            
 
             var currentdrops = new List<DisplayedDrops>();
-
+            var regionsslug = new List<Slug>();
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
 
@@ -76,10 +81,11 @@ namespace Swell.Main
             {
                 for (int x = 0; x < sizesSlugsArr.GetLength(0); x++)
                 {
-                    if (dropletsizes[i].Slug == sizesSlugsArr[x, 0] && dropletsizes[i].Available)
+                    if (dropletsizes[i].Slug == sizesSlugsArr[x, 0] /*&& dropletsizes[i].Available*/)
                     {
                         RadioButton rdbtn = new RadioButton(this);
-                        rdbtn.Text = sizesSlugsArr[i, 1];
+                        rdbtn.Text = sizesSlugsArr[x, 1];
+                        Console.WriteLine(sizesSlugsArr[x, 1]);
                         rdbtn.Id = View.GenerateViewId();
                         var toadd = new DisplayedDrops();
                         toadd.dropindex = i;
@@ -88,22 +94,31 @@ namespace Swell.Main
                         rgp.AddView(rdbtn);
                     }
                 }
-                if (rgp.ChildCount == 6)
-                {
-                    break;
-                }
+                Console.WriteLine(dropletsizes[i].Slug);
             }
 
             for (int i = 0; i < regions.Count; i++)
             {
                 if (regions[i].Available == true)
                 {
-                    RadioButton rdbtn = new RadioButton(this);
-                    rdbtn.Text = regions[i].Slug;
-                    rdbtn.Id = View.GenerateViewId();
-                    rgr.AddView(rdbtn);
+                    var x = new Slug();
+                    x.name = regions[i].Name;
+                    x.slug = regions[i].Slug;
+                    regionsslug.Add(x);
                 }
             }
+
+            regionsslug.Sort(new Comparison<Slug>((x, y) => string.Compare(x.name, y.name)));
+
+            for (int i = 0; i < regionsslug.Count; i++)
+            {
+                RadioButton rdbtn = new RadioButton(this);
+                rdbtn.Text = regionsslug[i].name;
+                rdbtn.Id = View.GenerateViewId();
+                rgr.AddView(rdbtn);
+            }
+
+
 
             RadioButton checkedrgp = FindViewById<RadioButton>(rgp.CheckedRadioButtonId);
             RadioButton checkedrgr = FindViewById<RadioButton>(rgr.CheckedRadioButtonId);
@@ -111,35 +126,25 @@ namespace Swell.Main
             rgp.CheckedChange += (o, e) =>
             {
                 checkedrgp = FindViewById<RadioButton>(rgp.CheckedRadioButtonId);
-                for(int i = 0; i < currentdrops.Count; i++)
-                {
-                    if(checkedrgp.Id == currentdrops[i].radioid)
-                    {
-                        var drop = dropletsizes[currentdrops[i].dropindex].Regions;
+            };
 
-                        for (int x = 0; x < dropletsizes[currentdrops[x].dropindex].Regions.Count; x++)
-                        {
-                            RadioButton rdbtn = new RadioButton(this);
-                            rdbtn.Text = dropletsizes[currentdrops[i].dropindex].Regions[x];
-                            rdbtn.Id = View.GenerateViewId();
-                            rgr.AddView(rdbtn);
-                        }
-                    }
-                };
+            rgr.CheckedChange += (o, e) =>
+            {
+                checkedrgr = FindViewById<RadioButton>(rgr.CheckedRadioButtonId);
             };
 
             Button next = FindViewById<Button>(Resource.Id.NextS2);
 
             next.Click += (o, e) =>
             {
-                if (checkedrgr == null)
-                {
-                    Toast.MakeText(this, "Please select region", ToastLength.Short).Show();
-                    return;
-                }
                 if (checkedrgp == null)
                 {
                     Toast.MakeText(this, "Please plan", ToastLength.Short).Show();
+                    return;
+                }
+                if (checkedrgr == null)
+                {
+                    Toast.MakeText(this, "Please select region", ToastLength.Short).Show();
                     return;
                 }
 

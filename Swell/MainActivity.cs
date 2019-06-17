@@ -41,7 +41,7 @@ namespace Swell.Main
             }
             else
             {
-                var intent = new Intent(this, typeof(Step2Activity));
+                var intent = new Intent(this, typeof(Step1Activity));
                 StartActivity(intent);
                 //StartUpdate(-1);
             }

@@ -2687,8 +2687,8 @@ namespace Swell
 			// aapt resource value: 0x7f080018
 			public const int line3 = 2131230744;
 			
-			// aapt resource value: 0x7f0800c5
-			public const int linearLayout1 = 2131230917;
+			// aapt resource value: 0x7f0800c3
+			public const int linearLayout1 = 2131230915;
 			
 			// aapt resource value: 0x7f08001d
 			public const int listMode = 2131230749;
@@ -2771,11 +2771,11 @@ namespace Swell
 			// aapt resource value: 0x7f0800c1
 			public const int radiogroupdistro = 2131230913;
 			
-			// aapt resource value: 0x7f0800c3
-			public const int radiogroupplan = 2131230915;
-			
 			// aapt resource value: 0x7f0800c4
-			public const int radiogroupregion = 2131230916;
+			public const int radiogroupplan = 2131230916;
+			
+			// aapt resource value: 0x7f0800c5
+			public const int radiogroupregion = 2131230917;
 			
 			// aapt resource value: 0x7f080098
 			public const int region = 2131230872;
