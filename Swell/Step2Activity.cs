@@ -34,7 +34,7 @@ namespace Swell.Main
             SetContentView(Resource.Layout.Step2);
 
             createdrop.Name = Intent.Extras.GetString("dropletName");
-            createdrop.ImageIdOrSlug = Intent.Extras.GetString("DropletDistro");
+            //createdrop.ImageIdOrSlug = Intent.Extras.GetString("DropletDistro");
             StartUpdate();
 
         }
@@ -144,9 +144,9 @@ namespace Swell.Main
                 checkedrgr = FindViewById<RadioButton>(rgr.CheckedRadioButtonId);
                 for (int i = 0; i < regionsslug.Count; i++)
                 {
-                    if (regionsslug[i].radioid == checkedrgp.Id)
+                    if (regionsslug[i].radioid == checkedrgr.Id)
                     {
-                        createdrop.SizeSlug = regionsslug[i].slug;
+                        createdrop.RegionSlug = regionsslug[i].slug;
                         break;
                     }
                 }
@@ -158,8 +158,6 @@ namespace Swell.Main
             back.Click += (o, e) => 
             {
                 var intent = new Intent(this, typeof(Step1Activity));
-                intent.PutExtra("DropletName", createdrop.Name);
-                intent.PutExtra("DropletDistro", createdrop.ImageIdOrSlug.ToString());
                 StartActivity(intent);
             };
 
@@ -178,7 +176,7 @@ namespace Swell.Main
 
                 var intent = new Intent(this, typeof(Step3Activity));
                 intent.PutExtra("DropletName", createdrop.Name);
-                intent.PutExtra("DropletDistro", createdrop.ImageIdOrSlug.ToString());
+                intent.PutExtra("DropletDistro", Intent.Extras.GetString("DropletDistro"));
                 intent.PutExtra("DropletRegion", createdrop.RegionSlug);
                 intent.PutExtra("DropletSize", createdrop.SizeSlug);
                 StartActivity(intent);

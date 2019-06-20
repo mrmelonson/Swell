@@ -18,16 +18,24 @@ namespace Swell.Main
     [Activity(Label = "Step3Activity")]
     public class Step3Activity : Activity
     {
+        public class sshkey
+        {
+            public string Name { get; set; }
+            public int radioid { get; set; }
+            public int Id { get; set; }
+            public bool selected {get; set; }
+        }
         private CancellationTokenSource cts;
         DigitalOcean.API.Models.Requests.Droplet createdrop = new DigitalOcean.API.Models.Requests.Droplet();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.Step2);
+            SetContentView(Resource.Layout.Step3);
 
-            var createdrop = new DigitalOcean.API.Models.Responses.Droplet();
-            createdrop.Name = Intent.Extras.GetString("dropletName");
-            createdrop.Image.Slug = Intent.Extras.GetString("DropletDistro");
+            createdrop.Name = Intent.Extras.GetString("DropletName");
+            createdrop.RegionSlug = Intent.Extras.GetString("DropletRegion");
+            createdrop.SizeSlug = Intent.Extras.GetString("DropletSize");
+            createdrop.ImageIdOrSlug = Intent.Extras.GetString("DropletDistro");
             StartUpdate();
 
         }
@@ -51,16 +59,40 @@ namespace Swell.Main
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
 
+            List<sshkey> sshkeys = new List<sshkey>();
+
             DigitalOceanClient client = new DigitalOceanClient(api_key);
 
             RadioGroup lls = FindViewById<RadioGroup>(Resource.Id.sshkeygroup);
+
+            var keys = await client.Keys.GetAll();
+
+            for(int i = 0; i < keys.Count; i++)
+            {
+                CheckBox cb = new CheckBox(this);
+                cb.Text = keys[i].Name;
+                cb.Id = View.GenerateViewId();
+                sshkey x = new sshkey();
+                x.Id = keys[i].Id;
+                x.Name = keys[i].Name;
+                x.radioid = cb.Id;
+                cb.SetOnClickListener(new );
+                lls.AddView(cb);
+            }
 
             createdrop.Backups = false;
             createdrop.Ipv6 = false;
             createdrop.Monitoring = false;
             createdrop.PrivateNetworking = false;
 
-            FindViewById<CheckBox>(Resource.Id.checkBoxbackup).CheckedChange += (o, e) =>
+            CheckBox bcb = FindViewById<CheckBox>(Resource.Id.checkBoxbackup);
+            CheckBox ipbcb = FindViewById<CheckBox>(Resource.Id.checkBoxipv6net);
+            CheckBox moncb = FindViewById<CheckBox>(Resource.Id.checkBoxmonitor);
+            CheckBox pvcb = FindViewById<CheckBox>(Resource.Id.checkBoxprivnet);
+
+            
+
+            bcb.CheckedChange += (o, e) =>
             {
                 if (FindViewById<CheckBox>(Resource.Id.checkBoxbackup).Checked)
                 {
@@ -72,7 +104,7 @@ namespace Swell.Main
                 }
             };
 
-            FindViewById<CheckBox>(Resource.Id.checkBoxipv6net).CheckedChange += (o, e) => 
+            ipbcb.CheckedChange += (o, e) => 
             {
                 if (FindViewById<CheckBox>(Resource.Id.checkBoxipv6net).Checked)
                 {
@@ -84,7 +116,7 @@ namespace Swell.Main
                 }
             };
 
-            FindViewById<CheckBox>(Resource.Id.checkBoxmonitor).CheckedChange += (o, e) => 
+            moncb.CheckedChange += (o, e) => 
             {
                 if (FindViewById<CheckBox>(Resource.Id.checkBoxmonitor).Checked)
                 {
@@ -96,7 +128,7 @@ namespace Swell.Main
                 }
             };
 
-            FindViewById<CheckBox>(Resource.Id.checkBoxprivnet).CheckedChange += (o, e) => 
+            pvcb.CheckedChange += (o, e) => 
             {
                 if (FindViewById<CheckBox>(Resource.Id.checkBoxprivnet).Checked)
                 {
@@ -112,15 +144,13 @@ namespace Swell.Main
 
             next.Click += (o, e) =>
             {
-                Toast.MakeText(this, createdrop.Backups.ToString() + 
-                    createdrop.Ipv6.ToString() + 
-                    createdrop.Monitoring.ToString() + 
-                    createdrop.PrivateNetworking.ToString(), ToastLength.Short).Show();
-
+                
+                
             };
+        }
 
-
-
+        private void CheckBoxOnClick(View v)
+        {
 
         }
 
