@@ -34,7 +34,6 @@ namespace Swell.Main
             SetContentView(Resource.Layout.Step2);
 
             createdrop.Name = Intent.Extras.GetString("dropletName");
-            //createdrop.ImageIdOrSlug = Intent.Extras.GetString("DropletDistro");
             StartUpdate();
 
         }

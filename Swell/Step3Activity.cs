@@ -76,7 +76,8 @@ namespace Swell.Main
                 x.Id = keys[i].Id;
                 x.Name = keys[i].Name;
                 x.radioid = cb.Id;
-                cb.SetOnClickListener(new );
+                sshkeys.Add(x);
+                cb.Click += delegate (object sender, EventArgs e) { CheckBoxOnClick(cb, sshkeys);  };
                 lls.AddView(cb);
             }
 
@@ -141,6 +142,14 @@ namespace Swell.Main
             };
 
             Button next = FindViewById<Button>(Resource.Id.NextS3);
+            Button back = FindViewById<Button>(Resource.Id.BackS3);
+
+            back.Click += (o, e) =>
+            {
+                var intent = new Intent(this, typeof(Step2Activity));
+                intent.PutExtra("DropletName", createdrop.Name);
+                intent.PutExtra("DropletDistro", Intent.Extras.GetString("DropletDistro"));
+            };
 
             next.Click += (o, e) =>
             {
@@ -149,9 +158,23 @@ namespace Swell.Main
             };
         }
 
-        private void CheckBoxOnClick(View v)
+        private void CheckBoxOnClick(CheckBox cb, List<sshkey> sshkeys)
         {
-
+            for (int i = 0; i < sshkeys.Count; i++)
+            {
+                if (cb.Id == sshkeys[i].radioid)
+                {
+                    if (cb.Checked)
+                    {
+                        cb.Selected = true;
+                    }
+                    else
+                    {
+                        cb.Selected = false;
+                    }
+                }
+            }
+            return;
         }
 
     }
