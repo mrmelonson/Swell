@@ -3,7 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-    </group>
+  <item android:title="Utilities">
+    <menu>
+      <item
+          android:id="@+id/create_new"
+          android:icon="@mipmap/ic_control_point"
+          android:title="Create New Droplet"
+          android:orderInCategory="100"/>
+    </menu>
+  </item>
 
 </menu>

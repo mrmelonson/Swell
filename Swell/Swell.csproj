@@ -150,7 +150,6 @@
     <AndroidResource Include="Resources\drawable\Digital_Ocean.png" />
     <AndroidResource Include="Resources\menu\drop_options.xml" />
     <AndroidResource Include="Resources\drawable\settings_icon.png" />
-    <AndroidResource Include="Resources\drawable\settings_icon1.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\Settings_icon2.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\Settings_icon2.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\Settings_icon2.png" />
@@ -165,6 +164,11 @@
     <AndroidResource Include="Resources\layout\Step3.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_control_point.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_control_point.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_control_point.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_control_point.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_control_point.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\imgs\" />

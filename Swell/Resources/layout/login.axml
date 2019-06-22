@@ -23,7 +23,6 @@
         android:imeOptions="actionDone"
         android:gravity="center"
         android:lines="1"
-        android:hint="API key"
         android:inputType="text"
         android:id="@+id/editText1" />
     <Button

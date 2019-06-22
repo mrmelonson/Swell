@@ -8,6 +8,10 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Support.V7.Widget;
+using Android.Support.V4.Widget;
+using Android.Support.V7.App;
+using Android.Support.Design.Widget;
 
 /*
  * TODO  
@@ -18,7 +22,7 @@ using Android.Widget;
 namespace Swell.Main
 {
     [Activity(Label = "Step1Activity")]
-    public class Step1Activity : Activity
+    public class Step1Activity : AppCompatActivity
     {
         public class DistroDrops
         {
@@ -31,6 +35,15 @@ namespace Swell.Main
             
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Step1);
+
+            //Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            //SetSupportActionBar(toolbar);
+
+            //DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
+            //drawer.AddDrawerListener(toggle);
+            //toggle.SyncState();
+
 
             var CreatedDroplet = new DigitalOcean.API.Models.Requests.Droplet();
 

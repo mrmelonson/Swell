@@ -13,7 +13,6 @@ using Android.Widget;
 using System.Collections.Generic;
 using Android.Graphics;
 using Android.Content;
-using Xamarin.Android;
 using Android.Preferences;
 
 namespace Swell.Main
@@ -27,8 +26,6 @@ namespace Swell.Main
         {
             base.OnCreate(savedInstanceState);
 
-            
-
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             //var prefedits = prefs.Edit();
             //prefedits.PutString("api_key", null).Commit();
@@ -41,9 +38,9 @@ namespace Swell.Main
             }
             else
             {
-                var intent = new Intent(this, typeof(Step1Activity));
-                StartActivity(intent);
-                //StartUpdate(-1);
+                //var intent = new Intent(this, typeof(Step1Activity));
+                //StartActivity(intent);
+                StartUpdate(-1);
             }
         }
 
@@ -64,7 +61,6 @@ namespace Swell.Main
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
             SetContentView(Resource.Layout.activity_main);
-
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
@@ -427,12 +423,12 @@ namespace Swell.Main
         public async Task UpdateNavMenu()
         {
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-            navigationView.SetNavigationItemSelectedListener(this);
-
             IMenu menu = navigationView.Menu;
             menu.Clear();
-            ISubMenu submenu = menu.AddSubMenu("Servers");
 
+            menu = navigationView.Menu;
+
+            ISubMenu submenu = menu.AddSubMenu("Servers");
             var droplets = await GetServerInfo();
 
             var ServerCount = droplets.Count;
@@ -440,6 +436,10 @@ namespace Swell.Main
             {
                 submenu.Add(i, i, i, droplets[i].Name);
             }
+            navigationView.InflateMenu(Resource.Menu.activity_main_drawer);
+
+            navigationView.SetNavigationItemSelectedListener(this);
+
 
             return;
         }
@@ -478,9 +478,17 @@ namespace Swell.Main
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
 
+            Toast.MakeText(this, id.ToString(), ToastLength.Short);
 
-            CreateScreen(id);
-
+            switch (id) {
+                case Resource.Id.create_new:
+                    var intent = new Intent(this, typeof(Step1Activity));
+                    StartActivity(intent);
+                    break;
+                default:
+                    CreateScreen(id);
+                    break;
+            }
             return true;
         }
 

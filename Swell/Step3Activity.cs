@@ -149,12 +149,24 @@ namespace Swell.Main
                 var intent = new Intent(this, typeof(Step2Activity));
                 intent.PutExtra("DropletName", createdrop.Name);
                 intent.PutExtra("DropletDistro", Intent.Extras.GetString("DropletDistro"));
+                StartActivity(intent);
             };
 
-            next.Click += (o, e) =>
+            next.Click += async (o, e) =>
             {
-                
-                
+                for(int i = 0; i < sshkeys.Count; i++)
+                {
+                    if(sshkeys[i].selected)
+                    {
+                        createdrop.SshIdsOrFingerprints.Add(sshkeys[i].Id);
+                    }
+                }
+                createdrop.UserData = null;
+
+                var creationAction = await client.Droplets.Create(createdrop);
+
+                var intent = new Intent(this, typeof(MainActivity));
+                StartActivity(intent);
             };
         }
 
