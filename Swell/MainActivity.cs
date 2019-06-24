@@ -60,6 +60,8 @@ namespace Swell.Main
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
+            RelativeLayout progress = FindViewById<RelativeLayout>(Resource.Id.loadingPanel);
+            progress.Visibility = ViewStates.Gone;
             SetContentView(Resource.Layout.activity_main);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -85,7 +87,9 @@ namespace Swell.Main
         public async Task CreateScreen(int id)
         {
             if (id < 0) { return; }
+            var progress = FindViewById<ProgressBar>(Resource.Id.loadingPanel);
             var droplets = await GetServerInfo();
+            progress.Visibility = ViewStates.Gone;
             currentDropId = id;
 
             await UpdateInfo(id);
@@ -439,7 +443,6 @@ namespace Swell.Main
             navigationView.InflateMenu(Resource.Menu.activity_main_drawer);
 
             navigationView.SetNavigationItemSelectedListener(this);
-
 
             return;
         }

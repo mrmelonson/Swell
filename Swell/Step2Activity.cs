@@ -75,7 +75,6 @@ namespace Swell.Main
             RadioGroup rgr = FindViewById<RadioGroup>(Resource.Id.radiogroupregion);
 
             var dropletsizes = await client.Sizes.GetAll();
-            var regions = await client.Regions.GetAll();
 
 
             for (int i = 0; i < dropletsizes.Count; i++)
@@ -97,6 +96,8 @@ namespace Swell.Main
                 }
                 Console.WriteLine(dropletsizes[i].Slug);
             }
+
+            var regions = await client.Regions.GetAll();
 
             for (int i = 0; i < regions.Count; i++)
             {
