@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Android.Graphics;
 using Android.Content;
 using Android.Preferences;
+using Swell.Resources.Fragments;
 
 namespace Swell.Main
 {
@@ -60,8 +61,6 @@ namespace Swell.Main
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
-            RelativeLayout progress = FindViewById<RelativeLayout>(Resource.Id.loadingPanel);
-            progress.Visibility = ViewStates.Gone;
             SetContentView(Resource.Layout.activity_main);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -74,6 +73,9 @@ namespace Swell.Main
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
+            var trans = SupportFragmentManager.BeginTransaction();
+            trans.Add(Resource.Id.DropletFragment, new Droplet_mainfragment(), "Fragment");
+            trans.Commit();
 
             await UpdateNavMenu();
             
@@ -87,9 +89,7 @@ namespace Swell.Main
         public async Task CreateScreen(int id)
         {
             if (id < 0) { return; }
-            var progress = FindViewById<ProgressBar>(Resource.Id.loadingPanel);
             var droplets = await GetServerInfo();
-            progress.Visibility = ViewStates.Gone;
             currentDropId = id;
 
             await UpdateInfo(id);
@@ -237,7 +237,6 @@ namespace Swell.Main
             var api_key = prefs.GetString("api_key", null);
             var client = new DigitalOceanClient(api_key);
             var droplets = await client.Droplets.GetAll();
-            var dropdata = new Array[droplets.Count, 100];
             return droplets;
         }
 

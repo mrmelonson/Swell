@@ -68,6 +68,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>API_KEY.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Fragments\Droplet_mainfragment.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Step1Activity.cs" />
@@ -172,6 +173,7 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_control_point.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_control_point.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_control_point.png" />
+    <AndroidResource Include="Resources\layout\content_main_fragment.axml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\imgs\" />
