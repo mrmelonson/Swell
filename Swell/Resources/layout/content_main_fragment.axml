@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:layout_marginTop="60dp">
 	<TextView
 		android:text="IPv4"
@@ -11,56 +12,59 @@
 		android:layout_height="wrap_content"
 		android:minWidth="25px"
 		android:minHeight="25px"
-		android:id="@+id/ip_v4"/>
+		android:id="@+id/ip_v4"
+		android:layout_marginLeft="15dp"/>
 	<TextView
 		android:text="Networking"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/specs" />
+		android:id="@+id/specs" 
+	android:layout_marginLeft="15dp"/>
 	<TextView
 		android:text="IPv6"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/ip_v6"
-		android:layout_marginLeft="20dp"/>
+		android:layout_marginLeft="35dp"/>
 	<TextView
 		android:text="IP Priv"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/ip_priv"
-		android:layout_marginLeft="20dp"/>
+		android:layout_marginLeft="35dp"/>
 	<TextView
 		android:text="Specs"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/specs" />
+		android:id="@+id/specs" 
+	android:layout_marginLeft="15dp"/>
 	<TextView
 		android:text="Cpu"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/cpu"
-		android:layout_marginLeft="20dp" />
+		android:layout_marginLeft="35dp" />
 	<TextView
 		android:text="Memory"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/memory"
-		android:layout_marginLeft="20dp"/>
+		android:layout_marginLeft="35dp"/>
 	<TextView
 		android:text="Disk"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/disk"
-		android:layout_marginLeft="20dp"/>
+		android:layout_marginLeft="35dp"/>
 	<TextView
-		android:layout_marginLeft="20dp"
+		android:layout_marginLeft="35dp"
 		android:text="Os"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
@@ -71,26 +75,68 @@
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/info" />
+		android:id="@+id/info" 
+		android:layout_marginLeft="15dp"/>
 	<TextView
-		android:layout_marginLeft="20dp"
+		android:layout_marginLeft="35dp"
 		android:text="region"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/region" />
 	<TextView
-		android:layout_marginLeft="20dp"
+		android:layout_marginLeft="35dp"
 		android:text="Status"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/status" />
-	<Switch
+	<TextView
+		android:layout_marginLeft="35dp"
+		android:text="Tags"
+		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:id="@+id/tags" />
+	<TextView
+		android:layout_marginTop="30dp"
+		android:text="Turn Droplet ON/OFF"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"/>
+	<Switch
+		android:layout_marginTop="30dp"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textOn="ON"
+		android:textOff="OFF"
+		android:layout_gravity="center"
 		android:id="@+id/switch1"
-		android:layout_marginRight="150.0dp" />
-
+		android:gravity="center"
+		android:scaleX="2"
+		android:scaleY="2"/>
+	<LinearLayout
+		android:id="@+id/linearLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:layout_marginTop="40dp">
+		<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Reboot"
+			android:id="@+id/BackS3"
+			android:layout_marginLeft="15dp"
+			android:layout_marginRight="50dp"/>
+		<Button
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="Power Cycle"
+			android:id="@+id/NextS3"
+			android:layout_marginLeft="50dp"
+			android:layout_marginRight="15dp"/>
+	</LinearLayout>
 </LinearLayout>
+
 

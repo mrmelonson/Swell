@@ -65,9 +65,20 @@ namespace Swell.Main
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
+            currentDropId = id;
             SetContentView(Resource.Layout.activity_main);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
+
+            _Loading_Fragment = new Loading_Fragment();
+            _droplet_Mainfragment = new Droplet_mainfragment();
+
+            var trans = SupportFragmentManager.BeginTransaction();
+            trans.Add(Resource.Id.DropletFragment, _droplet_Mainfragment, "Fragment");
+            trans.Add(Resource.Id.DropletFragment, _Loading_Fragment, "Fragment");
+            trans.Show(_Loading_Fragment);
+            trans.Hide(_droplet_Mainfragment);
+            trans.Commit();
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
@@ -77,25 +88,34 @@ namespace Swell.Main
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
-            _Loading_Fragment = new Loading_Fragment();
-            _droplet_Mainfragment = new Droplet_mainfragment();
 
             SwipeRefreshLayout swipe = FindViewById<SwipeRefreshLayout>(Resource.Id.swipeRefreshLayout);
             swipe.Refresh += async (o,e) =>
             {
+                trans = SupportFragmentManager.BeginTransaction();
+                trans.Show(_Loading_Fragment);
+                trans.Hide(_droplet_Mainfragment);
+                trans.Commit();
+
                 await UpdateNavMenu();
-                await CreateScreen(id);
+                if (id > 0)
+                {
+                    await UpdateInfo(currentDropId);
+                }
+                trans = SupportFragmentManager.BeginTransaction();
+                trans.Hide(_Loading_Fragment);
+                trans.Show(_droplet_Mainfragment);
+                trans.Commit();
                 swipe.Refreshing = false;
             };
 
-            var trans = SupportFragmentManager.BeginTransaction();
-            trans.Add(Resource.Id.DropletFragment, _droplet_Mainfragment, "Fragment");
-            trans.Add(Resource.Id.DropletFragment, _Loading_Fragment, "Fragment");
+            trans = SupportFragmentManager.BeginTransaction();
             trans.Hide(_Loading_Fragment);
+            trans.Show(_droplet_Mainfragment);
             trans.Commit();
 
             await UpdateNavMenu();
-            
+
         }
 
         /*
@@ -106,21 +126,21 @@ namespace Swell.Main
         public async Task CreateScreen(int id)
         {
             if (id < 0) { return; }
+            FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar).Title = "";
             var trans = SupportFragmentManager.BeginTransaction();
             trans.Hide(_droplet_Mainfragment);
             trans.Show(_Loading_Fragment);
             trans.Commit();
 
+            await UpdateInfo(id);
             var droplets = await GetServerInfo();
-            var trans2 = SupportFragmentManager.BeginTransaction();
-
-            trans2.Show(_droplet_Mainfragment);
-            trans2.Hide(_Loading_Fragment);
-            trans2.Commit();
 
             currentDropId = id;
 
-            await UpdateInfo(id);
+            trans = SupportFragmentManager.BeginTransaction();
+            trans.Show(_droplet_Mainfragment);
+            trans.Hide(_Loading_Fragment);
+            trans.Commit();
 
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
@@ -134,7 +154,6 @@ namespace Swell.Main
             alert.SetTitle("Confirm Poweroff");
             alert.SetMessage("Are you sure you want to force a shutdown?\nThis may cause data loss and corruption.\n Do you want to continue?");
             alert.SetCancelable(false);
-            TextView name = FindViewById<TextView>(Resource.Id.name);
 
             alert.SetNegativeButton("Cancel", (senderAlert, args) =>
             {
@@ -193,6 +212,7 @@ namespace Swell.Main
 
         public async Task UpdateInfo(int id)
         {
+
             var droplets = await GetServerInfo();
             await UpdateNavMenu();
 
@@ -204,6 +224,12 @@ namespace Swell.Main
 
             FindViewById<TextView>(Resource.Id.ip_v6).Text = "IPv6: Not Enabled";
             FindViewById<TextView>(Resource.Id.ip_priv).Text = "Priv Networking: Not Enabled";
+            string tags = string.Join(", ", droplets[id].Tags);
+            if (tags == "")
+            {
+                tags = "N/A";
+            }
+            FindViewById<TextView>(Resource.Id.tags).Text = "Tags: " + tags;
             foreach (var feature in droplets[id].Features)
             {
                 if(feature == "ipv6")
@@ -254,6 +280,13 @@ namespace Swell.Main
             {
                 switcher.Checked = false;
             }
+
+            if (!(droplets[id].Status == "active" || droplets[id].Status == "off"))
+            {
+                switcher.Enabled = false;
+            }
+
+
 
             return;
 
@@ -321,7 +354,7 @@ namespace Swell.Main
                 {
                     Toast.MakeText(this, "Error: Only characters a-z, 0-9, . and ()", ToastLength.Short).Show();
                 }
-                await UpdateInfo(id);
+                await CreateScreen(id);
             });
 
             rename.Show();
@@ -405,7 +438,7 @@ namespace Swell.Main
                         Toast.MakeText(this, err.ToString(), ToastLength.Short).Show();
                     }
                 }
-                await UpdateInfo(id);
+                await CreateScreen(id);
             });
             Enable.Show();
 
@@ -431,6 +464,10 @@ namespace Swell.Main
 
             deletepopup.SetPositiveButton("OK", async (senderAlert, args) =>
             {
+                var trans = SupportFragmentManager.BeginTransaction();
+                trans.Show(_Loading_Fragment);
+                trans.Hide(_droplet_Mainfragment);
+                trans.Commit();
                 try
                 {
                     await client.Droplets.Delete(droplets[id].Id);
@@ -439,6 +476,10 @@ namespace Swell.Main
                 {
                     Toast.MakeText(this, err.ToString(), ToastLength.Long).Show();
                 }
+                trans = SupportFragmentManager.BeginTransaction();
+                trans.Hide(_Loading_Fragment);
+                trans.Show(_droplet_Mainfragment);
+                trans.Commit();
                 StartUpdate(-1);
 
             });

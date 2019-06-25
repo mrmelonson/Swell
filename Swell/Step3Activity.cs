@@ -12,12 +12,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using DigitalOcean.API;
+using Swell.Resources.Fragments;
+using Android.Support.V7.App;
 
 namespace Swell.Main
 {
-    [Activity(Label = "Step3Activity")]
-    public class Step3Activity : Activity
+    [Activity(Label = "Create Droplet - Step 3")]
+    public class Step3Activity : AppCompatActivity
     {
+        private Loading_Fragment _Loading_Fragment;
+        private Step3_Fragment _Step3_Fragment;
         public class sshkey
         {
             public string Name { get; set; }
@@ -56,16 +60,32 @@ namespace Swell.Main
 
         public async Task UpdaterAsync(CancellationToken ct)
         {
+            _Loading_Fragment = new Loading_Fragment();
+            _Step3_Fragment = new Step3_Fragment();
+
+
+
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
 
-            List<sshkey> sshkeys = new List<sshkey>();
+            var trans = SupportFragmentManager.BeginTransaction();
+            trans.Add(Resource.Id.Step3_Frame, _Step3_Fragment, "Fragment");
+            trans.Add(Resource.Id.Step3_Frame, _Loading_Fragment, "Fragment");
+            trans.Hide(_Step3_Fragment);
+            trans.Show(_Loading_Fragment);
+            trans.Commit();
 
             DigitalOceanClient client = new DigitalOceanClient(api_key);
+            var keys = await client.Keys.GetAll();
+
+            trans = SupportFragmentManager.BeginTransaction();
+            trans.Hide(_Loading_Fragment);
+            trans.Show(_Step3_Fragment);
+            trans.Commit();
+
+            List<sshkey> sshkeys = new List<sshkey>();
 
             RadioGroup lls = FindViewById<RadioGroup>(Resource.Id.sshkeygroup);
-
-            var keys = await client.Keys.GetAll();
 
             for(int i = 0; i < keys.Count; i++)
             {
@@ -163,7 +183,17 @@ namespace Swell.Main
                 }
                 createdrop.UserData = null;
 
+                trans = SupportFragmentManager.BeginTransaction();
+                trans.Show(_Loading_Fragment);
+                trans.Hide(_Step3_Fragment);
+                trans.Commit();
+
                 var creationAction = await client.Droplets.Create(createdrop);
+
+                trans = SupportFragmentManager.BeginTransaction();
+                trans.Hide(_Loading_Fragment);
+                trans.Show(_Step3_Fragment);
+                trans.Commit();
 
                 var intent = new Intent(this, typeof(MainActivity));
                 StartActivity(intent);

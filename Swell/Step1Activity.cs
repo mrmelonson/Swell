@@ -21,7 +21,7 @@ using Android.Support.Design.Widget;
 
 namespace Swell.Main
 {
-    [Activity(Label = "Step1Activity")]
+    [Activity(Label = "Create Droplet - Step 1")]
     public class Step1Activity : AppCompatActivity
     {
         public class DistroDrops
@@ -39,11 +39,15 @@ namespace Swell.Main
             //Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             //SetSupportActionBar(toolbar);
 
+            //FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar).Title = "Create Droplet - Step 1";
+            //this.ActionBar.Title = "Create Droplet - Step 1";
+
+            
+
             //DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
             //drawer.AddDrawerListener(toggle);
             //toggle.SyncState();
-
 
             var CreatedDroplet = new DigitalOcean.API.Models.Requests.Droplet();
 
@@ -99,7 +103,6 @@ namespace Swell.Main
                     return;
                 }
 
-                Toast.MakeText(this, "Helloworld", ToastLength.Short).Show();
                 var intent = new Intent(this, typeof(Step2Activity));
                 intent.PutExtra("dropletName", editText.Text);
                 intent.PutExtra("DropletDistro", CreatedDroplet.ImageIdOrSlug.ToString());

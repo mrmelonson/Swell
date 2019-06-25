@@ -4,72 +4,8 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
-	<ScrollView 
+	<FrameLayout
+		android:id="@+id/Step2_Frame"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-	<LinearLayout
-		android:id="@+id/linearLayout1"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:orientation="vertical">
-		<Space
-			android:layout_width="match_parent"
-			android:layout_height="30dp"/>
-		<TextView
-			android:text="Step 3 - Plan"
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:gravity="center"/>
-		<Space
-			android:layout_width="match_parent"
-			android:layout_height="30dp"/>
-		<RadioGroup
-			android:id="@+id/radiogroupplan"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"/>
-		<Space
-			android:layout_width="match_parent"
-			android:layout_height="30dp"/>
-		<TextView
-			android:text="Step 4 - Region"
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:gravity="center"/>
-
-		<Space
-			android:layout_width="match_parent"
-			android:layout_height="30dp"/>
-		<RadioGroup
-			android:id="@+id/radiogroupregion"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"/>
-			<LinearLayout
-				android:id="@+id/linearLayout1"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center">
-				<Button
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Back"
-					android:id="@+id/BackS2"/>
-
-				<Button
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:text="Next"
-					android:id="@+id/NextS2"/>
-			</LinearLayout>
-		</LinearLayout>
-	</ScrollView>
-
+		android:layout_height="match_parent"/>
 </LinearLayout>

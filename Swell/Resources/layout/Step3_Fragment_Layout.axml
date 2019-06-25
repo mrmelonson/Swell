@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<ScrollView 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	<LinearLayout
+		android:id="@+id/linearLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="vertical">
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="30dp"/>
+		<TextView
+			android:text="Step 5 - Extra options"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:gravity="center"/>
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="30dp"/>
+		<CheckBox
+			android:text="Backups (20% of droplet price/month)"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/checkBoxbackup" 
+			android:layout_marginLeft="15dp"
+			android:layout_marginBottom="10dp"/>
+		<CheckBox
+			android:text="Private Networking"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/checkBoxprivnet" 
+			android:layout_marginLeft="15dp"
+			android:layout_marginBottom="10dp"/>
+		<CheckBox
+			android:text="Ipv6 Networking"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/checkBoxipv6net" 
+			android:layout_marginLeft="15dp"
+			android:layout_marginBottom="10dp"/>
+		<CheckBox
+			android:text="Monitoring"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/checkBoxmonitor" 
+			android:layout_marginLeft="15dp"
+			android:layout_marginBottom="10dp"/>
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="20dp"/>
+		<TextView
+			android:text="Step 6 - SSH keys"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:gravity="center"/>
+
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="30dp"/>
+		<RadioGroup
+			android:id="@+id/sshkeygroup"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_marginLeft="15dp"/>
+			<LinearLayout
+				android:id="@+id/linearLayout1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center">
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Back"
+					android:id="@+id/BackS3"/>
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:text="Finish"
+					android:id="@+id/NextS3"/>
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
+
+</LinearLayout>
