@@ -23,6 +23,10 @@ namespace Swell.Main
     {
         private CancellationTokenSource cts;
         public int currentDropId;
+
+        private Loading_Fragment _Loading_Fragment;
+        private Droplet_mainfragment _droplet_Mainfragment;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -73,8 +77,21 @@ namespace Swell.Main
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
+            _Loading_Fragment = new Loading_Fragment();
+            _droplet_Mainfragment = new Droplet_mainfragment();
+
+            SwipeRefreshLayout swipe = FindViewById<SwipeRefreshLayout>(Resource.Id.swipeRefreshLayout);
+            swipe.Refresh += async (o,e) =>
+            {
+                await UpdateNavMenu();
+                await CreateScreen(id);
+                swipe.Refreshing = false;
+            };
+
             var trans = SupportFragmentManager.BeginTransaction();
-            trans.Add(Resource.Id.DropletFragment, new Droplet_mainfragment(), "Fragment");
+            trans.Add(Resource.Id.DropletFragment, _droplet_Mainfragment, "Fragment");
+            trans.Add(Resource.Id.DropletFragment, _Loading_Fragment, "Fragment");
+            trans.Hide(_Loading_Fragment);
             trans.Commit();
 
             await UpdateNavMenu();
@@ -85,11 +102,22 @@ namespace Swell.Main
          * BELOW ARE GENERAL FUNCTIONS 
          * 
          */
-        
+
         public async Task CreateScreen(int id)
         {
             if (id < 0) { return; }
+            var trans = SupportFragmentManager.BeginTransaction();
+            trans.Hide(_droplet_Mainfragment);
+            trans.Show(_Loading_Fragment);
+            trans.Commit();
+
             var droplets = await GetServerInfo();
+            var trans2 = SupportFragmentManager.BeginTransaction();
+
+            trans2.Show(_droplet_Mainfragment);
+            trans2.Hide(_Loading_Fragment);
+            trans2.Commit();
+
             currentDropId = id;
 
             await UpdateInfo(id);
@@ -428,6 +456,7 @@ namespace Swell.Main
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             IMenu menu = navigationView.Menu;
             menu.Clear();
+
 
             menu = navigationView.Menu;
 
