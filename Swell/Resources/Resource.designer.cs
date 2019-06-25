@@ -2576,8 +2576,8 @@ namespace Swell
 			// aapt resource value: 0x7f08003d
 			public const int bottom = 2131230781;
 			
-			// aapt resource value: 0x7f08008d
-			public const int btnaddnewmech = 2131230861;
+			// aapt resource value: 0x7f080090
+			public const int btnaddnewmech = 2131230864;
 			
 			// aapt resource value: 0x7f080063
 			public const int buttonPanel = 2131230819;
@@ -2699,8 +2699,8 @@ namespace Swell
 			// aapt resource value: 0x7f080072
 			public const int expanded_menu = 2131230834;
 			
-			// aapt resource value: 0x7f080090
-			public const int fab = 2131230864;
+			// aapt resource value: 0x7f08008e
+			public const int fab = 2131230862;
 			
 			// aapt resource value: 0x7f080050
 			public const int fill = 2131230800;
@@ -2807,8 +2807,8 @@ namespace Swell
 			// aapt resource value: 0x7f0800b4
 			public const int name = 2131230900;
 			
-			// aapt resource value: 0x7f08008e
-			public const int nav_view = 2131230862;
+			// aapt resource value: 0x7f08008c
+			public const int nav_view = 2131230860;
 			
 			// aapt resource value: 0x7f0800aa
 			public const int navigation_header_container = 2131230890;
@@ -2996,8 +2996,8 @@ namespace Swell
 			// aapt resource value: 0x7f080087
 			public const int submit_area = 2131230855;
 			
-			// aapt resource value: 0x7f08008c
-			public const int swipeRefreshLayout = 2131230860;
+			// aapt resource value: 0x7f08008f
+			public const int swipeRefreshLayout = 2131230863;
 			
 			// aapt resource value: 0x7f08009e
 			public const int switch1 = 2131230878;
@@ -3044,8 +3044,8 @@ namespace Swell
 			// aapt resource value: 0x7f08006f
 			public const int title_template = 2131230831;
 			
-			// aapt resource value: 0x7f08008f
-			public const int toolbar = 2131230863;
+			// aapt resource value: 0x7f08008d
+			public const int toolbar = 2131230861;
 			
 			// aapt resource value: 0x7f08003e
 			public const int top = 2131230782;
