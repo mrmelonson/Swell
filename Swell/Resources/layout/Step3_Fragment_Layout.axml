@@ -76,23 +76,56 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_marginLeft="15dp"/>
-			<LinearLayout
-				android:id="@+id/linearLayout1"
-				android:layout_width="match_parent"
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="30dp"/>
+		<TextView
+			android:text="Step 7 - Tags"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:gravity="center"/>
+		<TextView
+			android:text="Seperate each tag with a comma"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:gravity="center"/>
+		<EditText
+			android:layout_width="250dp"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:lines="1"
+			android:inputType="text"
+			android:id="@+id/Tags" 
+			android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.-_"/>
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="30dp"/>
+		<LinearLayout
+			android:id="@+id/linearLayout1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+			<Button
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:gravity="center">
-				<Button
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Back"
-					android:id="@+id/BackS3"/>
+				android:text="Back"
+				android:id="@+id/BackS3"/>
 
-				<Button
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:text="Finish"
-					android:id="@+id/NextS3"/>
-			</LinearLayout>
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:text="Finish"
+				android:id="@+id/NextS3"/>
+		</LinearLayout>
+		<Space
+		android:layout_width="match_parent"
+		android:layout_height="30dp"/>
 		</LinearLayout>
 	</ScrollView>
 

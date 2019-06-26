@@ -53,6 +53,9 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_marginLeft="15dp"/>
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="30dp"/>
 			<LinearLayout
 				android:id="@+id/linearLayout1"
 				android:layout_width="match_parent"
@@ -70,6 +73,9 @@
 					android:text="Next"
 					android:id="@+id/NextS2"/>
 			</LinearLayout>
+			<Space
+		android:layout_width="match_parent"
+		android:layout_height="30dp"/>
 		</LinearLayout>
 	</ScrollView>
 

@@ -17,8 +17,13 @@
         android:title="Enable Priv Networking"
         app:showAsAction="never" />
   <item
-        android:id="@+id/DeleteDropmenu"
+        android:id="@+id/passreset"
         android:orderInCategory="4"
+        android:title="Reset Password"
+        app:showAsAction="never"/>
+  <item
+        android:id="@+id/DeleteDropmenu"
+        android:orderInCategory="5"
         android:title="Delete Droplet"
         app:showAsAction="never" 
         android:background="@android:color/black"/>

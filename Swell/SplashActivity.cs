@@ -4,7 +4,7 @@ using Android.Content;
 
 namespace Swell.Main
 {
-    [Activity(Theme = "@style/Swell.Splash", Label = "Splash", MainLauncher = true, NoHistory = true)]
+    [Activity(Theme = "@style/Swell.Splash", Label = "@string/app_name", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : Activity
     {
         public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)

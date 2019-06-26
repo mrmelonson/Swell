@@ -69,8 +69,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>API_KEY.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Fragments\Def_First_Fragment.cs" />
     <Compile Include="Resources\Fragments\Droplet_mainfragment.cs" />
-    <Compile Include="Resources\Fragments\Splash_Fragment.cs" />
+    <Compile Include="Resources\Fragments\Def_Fragment.cs" />
     <Compile Include="Resources\Fragments\Loading_Fragment.cs" />
     <Compile Include="Resources\Fragments\Step2_Fragment.cs" />
     <Compile Include="Resources\Fragments\Step3_Fragment.cs" />
@@ -199,12 +200,18 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Splash.axml">
+    <AndroidResource Include="Resources\layout\Def.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\Swell_Splash.xml" />
     <AndroidResource Include="Resources\drawable\Swell_Small.png" />
+    <AndroidResource Include="Resources\layout\Def_First.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\Deafult.png" />
+    <AndroidResource Include="Resources\drawable\Deafult_First.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\imgs\" />

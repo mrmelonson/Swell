@@ -13,7 +13,7 @@ using Android.Widget;
 
 namespace Swell.Resources.Fragments
 {
-    public class Splash_Fragment : Android.Support.V4.App.Fragment
+    public class Def_First_Fragment : Android.Support.V4.App.Fragment
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -21,10 +21,9 @@ namespace Swell.Resources.Fragments
 
             // Create your fragment here
         }
-
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View view = inflater.Inflate(Resource.Layout.Splash, container, false);
+            View view = inflater.Inflate(Resource.Layout.Def_First, container, false);
 
             return view;
         }

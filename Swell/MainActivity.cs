@@ -15,6 +15,7 @@ using Android.Graphics;
 using Android.Content;
 using Android.Preferences;
 using Swell.Resources.Fragments;
+using Android.Text;
 
 namespace Swell.Main
 {
@@ -26,6 +27,8 @@ namespace Swell.Main
 
         private Loading_Fragment _Loading_Fragment;
         private Droplet_mainfragment _droplet_Mainfragment;
+        private Def_Fragment _Def_Fragment;
+        private Def_First_Fragment _Def_First_Fragment;
 
         private DigitalOceanClient client;
 
@@ -46,7 +49,7 @@ namespace Swell.Main
             }
             else
             {
-                StartUpdate(-1);
+                StartUpdate(-2);
             }
         }
 
@@ -66,14 +69,25 @@ namespace Swell.Main
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
-            _Loading_Fragment = new Loading_Fragment();
-            _droplet_Mainfragment = new Droplet_mainfragment();
-
             var trans = SupportFragmentManager.BeginTransaction();
-            trans.Add(Resource.Id.DropletFragment, _droplet_Mainfragment, "Fragment");
-            trans.Add(Resource.Id.DropletFragment, _Loading_Fragment, "Fragment");
+
+            if (id == -2)
+            {
+                _Loading_Fragment = new Loading_Fragment();
+                _droplet_Mainfragment = new Droplet_mainfragment();
+                _Def_Fragment = new Def_Fragment();
+                _Def_First_Fragment = new Def_First_Fragment();
+
+                trans.Add(Resource.Id.DropletFragment, _droplet_Mainfragment, "Fragment");
+                trans.Add(Resource.Id.DropletFragment, _Loading_Fragment, "Fragment");
+                trans.Add(Resource.Id.DropletFragment, _Def_Fragment, "Fragment");
+                trans.Add(Resource.Id.DropletFragment, _Def_First_Fragment, "Fragment");
+            }
+
             trans.Show(_Loading_Fragment);
             trans.Hide(_droplet_Mainfragment);
+            trans.Hide(_Def_Fragment);
+            trans.Hide(_Def_First_Fragment);
             trans.Commit();
 
             currentDropId = id;
@@ -94,6 +108,7 @@ namespace Swell.Main
 
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
+            toolbar.Title = "Swell";
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
@@ -101,8 +116,15 @@ namespace Swell.Main
             toggle.SyncState();
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            fab.Click += (o, e) =>
+            {
+                if (id > 0)
+                {
+                    FabOnClick(o, e);
+                } 
+            };
 
+             
 
             SwipeRefreshLayout swipe = FindViewById<SwipeRefreshLayout>(Resource.Id.swipeRefreshLayout);
             swipe.Refresh += async (o, e) =>
@@ -127,8 +149,18 @@ namespace Swell.Main
             await UpdateNavMenu();
 
             trans = SupportFragmentManager.BeginTransaction();
+
+            if (id == -1)
+            {
+                trans.Show(_Def_Fragment);
+            }
+            else if (id == -2)
+            {
+                trans.Show(_Def_First_Fragment);
+            }
+
             trans.Hide(_Loading_Fragment);
-            trans.Show(_droplet_Mainfragment);
+            trans.Hide(_droplet_Mainfragment);
             trans.Commit();
 
 
@@ -139,11 +171,13 @@ namespace Swell.Main
          * 
          */
 
-        public async Task CreateScreen(int id)
+        public async Task CreateScreen(int id, string dropname)
         {
             if (id < 0) { return; }
-            FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar).Title = "";
+            FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar).Title = dropname;
             var trans = SupportFragmentManager.BeginTransaction();
+            trans.Hide(_Def_First_Fragment);
+            trans.Hide(_Def_Fragment);
             trans.Hide(_droplet_Mainfragment);
             trans.Show(_Loading_Fragment);
             trans.Commit();
@@ -158,10 +192,17 @@ namespace Swell.Main
             trans.Hide(_Loading_Fragment);
             trans.Commit();
 
-            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
+            
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
             Button reboot = FindViewById<Button>(Resource.Id.Reboot);
             Button PowerCycle = FindViewById<Button>(Resource.Id.PowerCycle);
+            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
+
+            if (droplets[id].Status != "active")
+            {
+                reboot.Enabled = false;
+                PowerCycle.Enabled = false;
+            }
 
             reboot.Click += async (o, e) =>
             {
@@ -173,9 +214,12 @@ namespace Swell.Main
                 await PowerDrop(id, 3, droplets[id]);
             };
 
-            switcher.Click += async (o, e) =>
+            switcher.CheckedChange += async (o, e) =>
             {
+                reboot.Enabled = false;
+                PowerCycle.Enabled = false;
                 switcher.Enabled = false;
+
                 if (switcher.Checked)
                 {
                     await PowerDrop(id, 1, droplets[id]);
@@ -327,7 +371,7 @@ namespace Swell.Main
                 {
                     Toast.MakeText(this, "Error: Only characters a-z, 0-9, . and -", ToastLength.Short).Show();
                 }
-                await CreateScreen(id);
+                await CreateScreen(id, droplets[id].Name);
             });
 
             rename.Show();
@@ -408,7 +452,7 @@ namespace Swell.Main
                         Toast.MakeText(this, err.ToString(), ToastLength.Short).Show();
                     }
                 }
-                await CreateScreen(id);
+                await CreateScreen(id, droplets[id].Name);
             });
             Enable.Show();
 
@@ -456,10 +500,14 @@ namespace Swell.Main
         public async Task PowerDrop(int id, int option, DigitalOcean.API.Models.Responses.Droplet droplet)
         {
             Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
+            Button reboot = FindViewById<Button>(Resource.Id.Reboot);
+            Button PowerCycle = FindViewById<Button>(Resource.Id.PowerCycle);
             Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
 
             switcher.Enabled = false;
+            reboot.Enabled = false;
+            PowerCycle.Enabled = false;
 
             //DigitalOcean.API.Models.Responses.Action action;
             //DigitalOcean.API.Models.Responses.Action actionget;
@@ -468,6 +516,9 @@ namespace Swell.Main
             {
                 switcher.Checked = true;
                 Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
+                switcher.Enabled = true;
+                reboot.Enabled = true;
+                PowerCycle.Enabled = true;
             });
 
             Dialog dialog = alert.Create();
@@ -492,7 +543,7 @@ namespace Swell.Main
                         }
                         Toast.MakeText(this, action.Status, ToastLength.Short).Show();
                         await UpdateInfo(id);
-                        DisableSwitch(switcher);
+                        DisableSwitch();
                     });
                     dialog = alert.Create();
                     dialog.Show();
@@ -502,15 +553,12 @@ namespace Swell.Main
                     statustext.SetTextColor(Color.ParseColor("#FF8C00"));
                     var _action = await client.DropletActions.PowerOn(droplet.Id);
                     var _actionget = await client.Actions.Get(_action.Id);
-                    Toast.MakeText(this, _action.Status, ToastLength.Short).Show();
                     while (_actionget.Status != "completed")
                     {
                         _actionget = await client.Actions.Get(_action.Id);
-                        Toast.MakeText(this, _actionget.Status, ToastLength.Short).Show();
                     }
-                    Toast.MakeText(this, _action.Status, ToastLength.Short).Show();
                     await UpdateInfo(id);
-                    DisableSwitch(switcher);
+                    DisableSwitch();
                     break;
                 case 2:
                     alert.SetTitle("Confirm Reboot");
@@ -529,7 +577,7 @@ namespace Swell.Main
                         }
                         Toast.MakeText(this, action.Status, ToastLength.Short).Show();
                         await UpdateInfo(id);
-                        DisableSwitch(switcher);
+                        DisableSwitch();
                     });
                     dialog = alert.Create();
                     dialog.Show();
@@ -551,7 +599,7 @@ namespace Swell.Main
                         }
                         Toast.MakeText(this, action.Status, ToastLength.Short).Show();
                         await UpdateInfo(id);
-                        DisableSwitch(switcher);
+                        DisableSwitch();
                     });
                     dialog = alert.Create();
                     dialog.Show();
@@ -603,12 +651,18 @@ namespace Swell.Main
              * 
              */
 
-            public void DisableSwitch(Switch switcher)
+        public void DisableSwitch()
         {
+            Button reboot = FindViewById<Button>(Resource.Id.Reboot);
+            Button PowerCycle = FindViewById<Button>(Resource.Id.PowerCycle);
+            Switch switcher = FindViewById<Switch>(Resource.Id.switch1);
+
             Handler h = new Handler();
             Action EnableSwitcher = () =>
             {
                 switcher.Enabled = true;
+                reboot.Enabled = false;
+                PowerCycle.Enabled = false;
             };
             h.PostDelayed(EnableSwitcher, 10000);
             return;
@@ -621,17 +675,26 @@ namespace Swell.Main
             IMenu menu = navigationView.Menu;
             menu.Clear();
 
+            List<string> dropnames = new List<string>();
 
             menu = navigationView.Menu;
 
-            ISubMenu submenu = menu.AddSubMenu("Servers");
+            ISubMenu submenu = menu.AddSubMenu("Droplets");
             var droplets = await GetServerInfo();
 
             var ServerCount = droplets.Count;
             for (int i = 0; i < droplets.Count; i++)
             {
+                dropnames.Add(droplets[i].Name);
+            }
+
+            dropnames.Sort();
+
+            for (int i = 0; i < dropnames.Count; i++)
+            {
                 submenu.Add(i, i, i, droplets[i].Name);
             }
+
             navigationView.InflateMenu(Resource.Menu.activity_main_drawer);
 
             navigationView.SetNavigationItemSelectedListener(this);
@@ -693,7 +756,7 @@ namespace Swell.Main
                     StartActivity(intent);
                     break;
                 default:
-                    CreateScreen(id);
+                    CreateScreen(id, item.TitleFormatted.ToString());
                     break;
             }
             return true;
@@ -740,7 +803,7 @@ namespace Swell.Main
         {
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             PopupMenu popup = new PopupMenu(this, fab);
-            popup.MenuInflater.Inflate(Resource.Layout.content_main_fragment, popup.Menu);
+            popup.MenuInflater.Inflate(Resource.Menu.drop_options, popup.Menu);
             popup.Show();
             popup.MenuItemClick += async (o, e) =>
             {
@@ -759,6 +822,9 @@ namespace Swell.Main
                         break;
                     case Resource.Id.DeleteDropmenu:
                         await DeleteDrop(currentDropId);
+                        break;
+                    case Resource.Id.passreset:
+                        await ResetPass(currentDropId);
                         break;
                     default:
                         return;

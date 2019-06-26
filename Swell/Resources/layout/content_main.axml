@@ -4,8 +4,7 @@
 	android:id="@+id/swipeRefreshLayout"    
 	android:layout_width="match_parent"    
 	android:layout_height="match_parent"    
-	android:layout_above="@+id/btnaddnewmech"    
-	android:layout_alignParentTop="true"> 
+	android:layout_above="@+id/btnaddnewmech"> 
 	<LinearLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"

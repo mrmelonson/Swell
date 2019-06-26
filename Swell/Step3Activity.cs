@@ -112,6 +112,7 @@ namespace Swell.Main
             CheckBox pvcb = FindViewById<CheckBox>(Resource.Id.checkBoxprivnet);
 
             
+            
 
             bcb.CheckedChange += (o, e) =>
             {
@@ -164,6 +165,9 @@ namespace Swell.Main
             Button next = FindViewById<Button>(Resource.Id.NextS3);
             Button back = FindViewById<Button>(Resource.Id.BackS3);
 
+            EditText tagsedit = FindViewById<EditText>(Resource.Id.Tags);
+                    
+
             back.Click += (o, e) =>
             {
                 var intent = new Intent(this, typeof(Step2Activity));
@@ -182,6 +186,17 @@ namespace Swell.Main
                     }
                 }
                 createdrop.UserData = null;
+                string[] tags = tagsedit.Text.Split(",");
+                if (tags.Length > 0)
+                {
+                    for (int i = 0; i < tags.Length; i++)
+                    {
+                        if (tags[i] != "" && tags[i] != null)
+                        {
+                            createdrop.Tags.Add(tags[i]);
+                        }
+                    }
+                }
 
                 trans = SupportFragmentManager.BeginTransaction();
                 trans.Show(_Loading_Fragment);
