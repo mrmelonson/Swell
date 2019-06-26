@@ -20,6 +20,7 @@
         android:id="@+id/DeleteDropmenu"
         android:orderInCategory="4"
         android:title="Delete Droplet"
-        app:showAsAction="never" />
+        app:showAsAction="never" 
+        android:background="@android:color/black"/>
       
 </menu>

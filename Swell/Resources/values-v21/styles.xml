@@ -8,4 +8,14 @@
   <style name="TextAppearance">
     <item name="android:ellipsize">end</item>
   </style>
+  
+  <style name="Swell.Splash" parent ="AppTheme.NoActionBar">
+    <item name="android:windowBackground">@drawable/Swell_Splash</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">true</item>
+  </style>
+  <style name="Swell.Popupstyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+    <item name="android:popupBackground">#FF0000</item>
+    <item name="android:colorBackground">#FF0000</item>
+  </style>
 </resources>

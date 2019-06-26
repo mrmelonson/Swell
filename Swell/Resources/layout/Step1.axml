@@ -24,7 +24,8 @@
 		android:layout_gravity="center"
 		android:lines="1"
         android:inputType="text"
-		android:id="@+id/Dropname" />
+		android:id="@+id/Dropname" 
+		android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.-"/>
 	<Space
 		android:layout_width="match_parent"
 		android:layout_height="30dp"/>

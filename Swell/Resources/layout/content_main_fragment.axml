@@ -126,14 +126,14 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="Reboot"
-			android:id="@+id/BackS3"
+			android:id="@+id/Reboot"
 			android:layout_marginLeft="15dp"
 			android:layout_marginRight="50dp"/>
 		<Button
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:text="Power Cycle"
-			android:id="@+id/NextS3"
+			android:id="@+id/PowerCycle"
 			android:layout_marginLeft="50dp"
 			android:layout_marginRight="15dp"/>
 	</LinearLayout>

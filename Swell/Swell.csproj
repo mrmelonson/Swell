@@ -70,11 +70,13 @@
       <DependentUpon>API_KEY.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Fragments\Droplet_mainfragment.cs" />
+    <Compile Include="Resources\Fragments\Splash_Fragment.cs" />
     <Compile Include="Resources\Fragments\Loading_Fragment.cs" />
     <Compile Include="Resources\Fragments\Step2_Fragment.cs" />
     <Compile Include="Resources\Fragments\Step3_Fragment.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SplashActivity.cs" />
     <Compile Include="Step1Activity.cs" />
     <Compile Include="Step2Activity.cs" />
     <Compile Include="Step3Activity.cs" />
@@ -197,6 +199,12 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\Splash.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\Swell_Splash.xml" />
+    <AndroidResource Include="Resources\drawable\Swell_Small.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\imgs\" />
