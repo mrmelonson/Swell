@@ -69,20 +69,18 @@ namespace Swell.Main
 
         public async Task UpdaterAsync(CancellationToken ct, int id)
         {
+            SetContentView(Resource.Layout.activity_main);
             var trans = SupportFragmentManager.BeginTransaction();
 
-            if (id == -2)
-            {
-                _Loading_Fragment = new Loading_Fragment();
-                _droplet_Mainfragment = new Droplet_mainfragment();
-                _Def_Fragment = new Def_Fragment();
-                _Def_First_Fragment = new Def_First_Fragment();
+            _Loading_Fragment = new Loading_Fragment();
+            _droplet_Mainfragment = new Droplet_mainfragment();
+            _Def_Fragment = new Def_Fragment();
+            _Def_First_Fragment = new Def_First_Fragment();
 
-                trans.Add(Resource.Id.DropletFragment, _droplet_Mainfragment, "Fragment");
-                trans.Add(Resource.Id.DropletFragment, _Loading_Fragment, "Fragment");
-                trans.Add(Resource.Id.DropletFragment, _Def_Fragment, "Fragment");
-                trans.Add(Resource.Id.DropletFragment, _Def_First_Fragment, "Fragment");
-            }
+            trans.Add(Resource.Id.DropletFragment, _droplet_Mainfragment, "Fragment");
+            trans.Add(Resource.Id.DropletFragment, _Loading_Fragment, "Fragment");
+            trans.Add(Resource.Id.DropletFragment, _Def_Fragment, "Fragment");
+            trans.Add(Resource.Id.DropletFragment, _Def_First_Fragment, "Fragment");
 
             trans.Show(_Loading_Fragment);
             trans.Hide(_droplet_Mainfragment);
@@ -94,15 +92,6 @@ namespace Swell.Main
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var api_key = prefs.GetString("api_key", null);
 
-            try
-            {
-                await AuthUser(api_key);
-            }
-            catch
-            {
-                Toast.MakeText(this, "ERROR", ToastLength.Short);
-                Logout();
-            }
 
             client = new DigitalOceanClient(api_key);
 
@@ -113,18 +102,7 @@ namespace Swell.Main
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
             drawer.AddDrawerListener(toggle);
-            toggle.SyncState();
-
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += (o, e) =>
-            {
-                if (id > 0)
-                {
-                    FabOnClick(o, e);
-                } 
-            };
-
-             
+            toggle.SyncState();       
 
             SwipeRefreshLayout swipe = FindViewById<SwipeRefreshLayout>(Resource.Id.swipeRefreshLayout);
             swipe.Refresh += async (o, e) =>
@@ -139,6 +117,7 @@ namespace Swell.Main
                 {
                     await UpdateInfo(currentDropId);
                 }
+
                 trans = SupportFragmentManager.BeginTransaction();
                 trans.Hide(_Loading_Fragment);
                 trans.Show(_droplet_Mainfragment);
@@ -192,7 +171,9 @@ namespace Swell.Main
             trans.Hide(_Loading_Fragment);
             trans.Commit();
 
-            
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            fab.Click += FabOnClick;
+
             TextView statustext = FindViewById<TextView>(Resource.Id.status);
             Button reboot = FindViewById<Button>(Resource.Id.Reboot);
             Button PowerCycle = FindViewById<Button>(Resource.Id.PowerCycle);
@@ -321,21 +302,21 @@ namespace Swell.Main
             return droplets;
         }
 
-        public async Task AuthUser(string key)
+        public async Task<int> AuthUser(string key)
         {
             client = new DigitalOceanClient(key);
             try
             {
-                var drops = await client.Droplets.GetAll();
-                return;
+                await client.Droplets.GetAll();
+                return 1;
             }
             catch (DigitalOcean.API.Exceptions.ApiException err)
             {
-                throw new Exception("Invalid API key");
+                return 2;
             }
             catch (Exception err)
             {
-                throw new Exception("Unknown error");
+                return 3;
             }
         }
 
@@ -709,20 +690,23 @@ namespace Swell.Main
             EditText Keyinput = FindViewById<EditText>(Resource.Id.editText1);
             loginButton.Click += async (o, e) =>
             {
-                try
+                int authd = await AuthUser(Keyinput.Text);
+                if (authd == 1)
                 {
-                    await AuthUser(Keyinput.Text);
-
                     Toast.MakeText(this, "Logging in...", ToastLength.Short).Show();
                     ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
                     var prefedit = prefs.Edit();
                     prefedit.PutString("api_key", Keyinput.Text);
                     prefedit.Commit();
-                    StartUpdate(-1);
+                    StartUpdate(-2);
                 }
-                catch (Exception err)
+                else if (authd == 2)
                 {
-                    Toast.MakeText(this, err.ToString(), ToastLength.Long).Show();
+                    Toast.MakeText(this, "Invalid API key", ToastLength.Short).Show();
+                }
+                else if (authd == 3)
+                {
+                    Toast.MakeText(this, "Uknown error, check connection", ToastLength.Short).Show();
                 }
             };
         }
