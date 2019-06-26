@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
+	<ImageView
+		android:layout_width="200px"
+		android:layout_height="200px"
+		android:src="@drawable/Swell"/>
     <TextView
         android:text="Swell"
         android:textSize="30sp"
