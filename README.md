@@ -4,9 +4,9 @@
 Maybe you didn't hear me. Swell is a droplet manager for the service [Digital Ocean](https://www.digitalocean.com/)
 
 ### ScreenShots
-![Login Screen](https://i.imgur.com/lyD4mba.jpg =250x)
-![View Droplet Screen](https://i.imgur.com/yZgHJ2e.jpg =250x)
-![Nav Menu Screen](https://i.imgur.com/zgcnwlr.jpg =250x)
+<img src="https://i.imgur.com/lyD4mba.jpg" width="250">
+<img src="https://i.imgur.com/yZgHJ2e.jpg" width="250">
+<img src="https://i.imgur.com/zgcnwlr.jpg" width="250">
 
 ### How to install
 1. Download Lastest build from [releases](https://github.com/mrmelonson/Swell/releases) tab
